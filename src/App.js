@@ -19,7 +19,7 @@ function App() {
 
   let categories = Categories;
   console.log(categories);
-  const [menuCollapse, setMenuCollapse] = useState(false)
+  const [menuCollapse, setMenuCollapse] = useState(true)
 
   const menuIconClick = () => {
     //condition checking to change state from true to false and vice versa
@@ -101,8 +101,14 @@ function App() {
   </Menu>
     </Sidebar>
     </ProSidebarProvider>
-    <main style={{ padding: 10 }}> Main content</main>
-  </div>
+
+
+
+{/* ADD SEARCH ON HEADER (CREATE NEW COMPONENT) */}
+{/* ADD GRID VIEW */}
+
+
+    </div>
   </>
   );
 }
