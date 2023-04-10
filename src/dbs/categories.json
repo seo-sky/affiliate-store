@@ -1,0 +1,17 @@
+[
+  {
+     "name":"Charts",
+     "subcategories":[
+        "Pie charts",
+        "Line charts"
+     ]
+  },
+  {
+    "name":"Documentation",
+    "subcategories":[]
+ },
+ {
+  "name":"Calendar",
+  "subcategories":[]
+  }
+]

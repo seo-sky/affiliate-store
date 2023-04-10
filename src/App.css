@@ -1,5 +1,22 @@
+body, html {
+  height: 100% !important;
+}
+#root {
+  height: 100% !important;
+}
+.ps-sidebar-root{
+  height: 100% !important;
+}
+.ps-sidebar-container {
+  height: 100% !important;
+}
 .App {
   text-align: center;
+  height: 100% !important;
+}
+
+.collapse_button:hover{
+  cursor: pointer;
 }
 
 .App-logo {
