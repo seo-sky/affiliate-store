@@ -1,5 +1,5 @@
 body, html {
-  height: 100% !important;
+  height: 98% !important;
 }
 #root {
   height: 100% !important;
@@ -55,4 +55,6 @@ body, html {
 }
 
 
-
+.transitionMain{
+  transition: all 0.5s;
+}

@@ -7,12 +7,14 @@ import Stack from '@mui/material/Stack';
 import seosky from './images/linkedin_banner_image_1.png';
 import seosky_logo from './images/youtube_profile_image.png';
 import { ProSidebarProvider, Sidebar, Menu, MenuItem, SubMenu, useProSidebar } from 'react-pro-sidebar';
-
 import Tilty from 'react-tilty';
 import Categories from './dbs/categories.json';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+
+import Products from './components/Products.js';
+import Search from './components/HeaderSearch.js';
 
 
 function App() {
@@ -52,10 +54,10 @@ function App() {
 
   return (
     <>
-    <div style={{ display: 'flex', height: '100%', minHeight: '400px' }}>
+    <div style={{width: '100% !important', height: '100%', minHeight: '400px' }}>
       
-      <ProSidebarProvider>
-    <Sidebar  defaultCollapsed={menuCollapse}  style={{borderBottomRightRadius: '30px', borderTopRightRadius: '30px'}}
+      <ProSidebarProvider style={{}}>
+    <Sidebar   defaultCollapsed={menuCollapse}  style={{position: 'fixed', top: 0, borderBottomRightRadius: '30px', borderTopRightRadius: '30px'}}
     rootStyles={{
       background:
         'linear-gradient(180deg, rgba(178,235,249,1) 0%, rgba(89,117,124,1) 49%, rgba(255,255,255,1) 100%)',
@@ -106,8 +108,10 @@ function App() {
 
 {/* ADD SEARCH ON HEADER (CREATE NEW COMPONENT) */}
 {/* ADD GRID VIEW */}
-
-
+    <div className='transitionMain' style={{paddingLeft: menuCollapse ? '100px' : '280px', paddingRight: '20px'}}>
+      <Search></Search>
+      <Products></Products>
+    </div>
     </div>
   </>
   );
