@@ -16,20 +16,63 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import Paper from '@mui/material/Paper';
+import TextField from "@mui/material/TextField";
 import allProducts from './../dbs/products.json';
 
 
 function Products() {
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
+let currentProducts = allProducts;
+ const currencies = [
+    {
+      value: 'populare',
+      label: 'Cele mai populare',
+    },
+    {
+      value: 'noi',
+      label: 'Cele mai noi',
+    },
+    {
+      value: 'crescator',
+      label: 'Pret crescator',
+    },
+    {
+      value: 'descrescator',
+      label: 'Pret descrescator',
+    }
+    
+  ];
 return (
+  <div>
+    <div className="mainSearch">
+    
+      
+      <div className="search">
+        <TextField
+          id="outlined-basic"
+          variant="outlined"
+          fullWidth
+          label="Search..."
+        />
+        <TextField
+          id="outlined-select-currency-native"
+          select
+          label="Sort"
+          defaultValue="EUR"
+          SelectProps={{
+            native: true,
+          }}
+          style={{width: "200px", marginTop: "20px"}}
+        >
+          {currencies.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </TextField>
+      </div>
+    </div>
   <Grid className="gridProducts" container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} columns={{ xs: 2, sm: 3,  md: 6, xl: 12}}>
-    {allProducts.map(prod => {
+    {currentProducts.map(prod => {
       return (
     <Grid item xs={3} style={{marginBottom: "20px"}}>
   <div className="el-wrapper">
@@ -77,7 +120,7 @@ return (
   </Grid> */}
 </Grid>
       
-
+</div>
       
 )
 }

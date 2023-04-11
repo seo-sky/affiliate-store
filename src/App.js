@@ -147,7 +147,7 @@ function App() {
 {/* ADD SEARCH ON HEADER (CREATE NEW COMPONENT) */}
 {/* ADD GRID VIEW */}
     <div className='transitionMain' onClick={()=>{setMenuCollapse(true)}} style={{paddingLeft: menuCollapse ? '100px' : '280px', paddingRight: '20px'}}>
-      <Search></Search>
+    <h1><b className="titleSearch">S</b>tore - <i className='titleSearch'>Seo</i>Sky</h1>
       <div className='ProdDiv' style={{ opacity: menuCollapse ? '1' : '0.2'}}>
         <Products ></Products>
       </div>
