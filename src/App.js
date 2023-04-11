@@ -15,7 +15,7 @@ import Categories from './dbs/categories.json';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import SsLogo from './images/favicon.ico';
+import sslogo from './images/sslogo.jpg';
 import Products from './components/Products.js';
 import Search from './components/HeaderSearch.js';
 
@@ -155,7 +155,7 @@ function App() {
       <Snackbar style={{backgroundColor: "#fff"}}
         open={open}
         onClose={handleClose}
-        message="Check our website!"
+        message=<div><img src={sslogo} height="20px" width="20px" style={{position:'relative'}} /> <p style={{display: 'inline',position:'relative', top:"-3px"}}>Check Our website</p></div>
         action={action}
       />
     </div>

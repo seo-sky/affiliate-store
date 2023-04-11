@@ -13,6 +13,7 @@ import Categories from './../dbs/categories.json';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import sslogo from './../images/sslogo.jpg';
 
 
 function Search() {
@@ -37,6 +38,7 @@ function Search() {
   ];
 return (
   <div className="mainSearch">
+    
       <h1><b className="titleSearch">S</b>tore - <i className='titleSearch'>Seo</i>Sky</h1>
       <div className="search">
         <TextField
