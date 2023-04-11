@@ -223,7 +223,7 @@ return (
               width: "90%",
               imageWidth: 200,
               imageHeight: 200,
-              confirmButtonText: 'Buy '+prod.price+'$ from amazon',
+              confirmButtonText: 'Buy '+prod.price+'$ from '+prod.distribuitor,
               showCancelButton: true,
             }).then((result) => {
               /* Read more about isConfirmed, isDenied below */
