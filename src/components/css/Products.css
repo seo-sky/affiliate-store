@@ -75,6 +75,10 @@
   text-align: center;
 }
 
+.cart:hover{
+  cursor: pointer;
+}
+
 .el-wrapper .img {
   padding: 10px 0;
   -webkit-transition: all 800ms cubic-bezier(0, 0, 0.18, 1);

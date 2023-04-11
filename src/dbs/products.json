@@ -1,6 +1,6 @@
 [
   {
-    "id": "USBtoEthernetAdapter1",
+    "id": "prod1",
     "date": "11.04.2023",
     "clicks": 0,
     "name": "USB to Ethernet Adapter1",
@@ -10,10 +10,11 @@
     "description": "【Multi-function Ethernet Adapter】 This USB ethernet adapter features 3 USB3.0 ports and a 1000Mbps RJ45 gigabit port, just connect it to your device to use high-speed network and other USB devices at the same time.\n【Fast and Stable Network】 This ethernet adapter comes with a high-speed 1000Mbps Gigabit LAN port, which provides you stable and secure high-speed network so you can easily enjoy your network time.\n【Transfer Data in Seconds】 With 3 USB3.0 ports, you will enjoy 5 times the transfer speed of USB2.0, complete your download work quickly and provide you with more convenience in both life and work. \n【Plug and Play】 This ethernet to usb adapter is easy to use, light and portable, it can be used without installing other drivers, which is simple and convenient.(Notes: Not recommended for charging.)\n【Wide compatibility】 This USB ethernet adapter compatible with most laptops, Chromebooks and tablets, working with Windows, MacOS, ChromeOS and Linux.The 3 usb 3.0 port allowing you to connect a keyboard, mouse, usb driver, external disk to your device.(Not compatible with Switch and PS4)",
     "distribuitor": "Amazon.com",
     "category": "Tech",
-    "subcategory": "Webcam"
+    "subcategory": "Webcam",
+    "link": "https://amzn.to/3MAoLSb"
   },
   {
-    "id": "USBtoEthernetAdapter2",
+    "id": "prod2",
     "date": "12.04.2023",
     "clicks": 0,
     "name": "USB to Ethernet Adapter2",
@@ -23,10 +24,11 @@
     "description": "【Multi-function Ethernet Adapter】 This USB ethernet adapter features 3 USB3.0 ports and a 1000Mbps RJ45 gigabit port, just connect it to your device to use high-speed network and other USB devices at the same time.\n【Fast and Stable Network】 This ethernet adapter comes with a high-speed 1000Mbps Gigabit LAN port, which provides you stable and secure high-speed network so you can easily enjoy your network time.\n【Transfer Data in Seconds】 With 3 USB3.0 ports, you will enjoy 5 times the transfer speed of USB2.0, complete your download work quickly and provide you with more convenience in both life and work. \n【Plug and Play】 This ethernet to usb adapter is easy to use, light and portable, it can be used without installing other drivers, which is simple and convenient.(Notes: Not recommended for charging.)\n【Wide compatibility】 This USB ethernet adapter compatible with most laptops, Chromebooks and tablets, working with Windows, MacOS, ChromeOS and Linux.The 3 usb 3.0 port allowing you to connect a keyboard, mouse, usb driver, external disk to your device.(Not compatible with Switch and PS4)",
     "distribuitor": "Amazon.com",
     "category": "Documentation",
-    "subcategory": false
+    "subcategory": false,
+    "link": "https://amzn.to/3MAoLSb"
   },
   {
-    "id": "USBtoEthernetAdapter2",
+    "id": "prod3",
     "date": "10.04.2023",
     "clicks": 0,
     "name": "USB to Ethernet Adapter2",
@@ -36,10 +38,11 @@
     "description": "【Multi-function Ethernet Adapter】 This USB ethernet adapter features 3 USB3.0 ports and a 1000Mbps RJ45 gigabit port, just connect it to your device to use high-speed network and other USB devices at the same time.\n【Fast and Stable Network】 This ethernet adapter comes with a high-speed 1000Mbps Gigabit LAN port, which provides you stable and secure high-speed network so you can easily enjoy your network time.\n【Transfer Data in Seconds】 With 3 USB3.0 ports, you will enjoy 5 times the transfer speed of USB2.0, complete your download work quickly and provide you with more convenience in both life and work. \n【Plug and Play】 This ethernet to usb adapter is easy to use, light and portable, it can be used without installing other drivers, which is simple and convenient.(Notes: Not recommended for charging.)\n【Wide compatibility】 This USB ethernet adapter compatible with most laptops, Chromebooks and tablets, working with Windows, MacOS, ChromeOS and Linux.The 3 usb 3.0 port allowing you to connect a keyboard, mouse, usb driver, external disk to your device.(Not compatible with Switch and PS4)",
     "distribuitor": "Amazon.com",
     "category": "Tech",
-    "subcategory": "Webcam"
+    "subcategory": "Webcam",
+    "link": "https://amzn.to/3MAoLSb"
   },
   {
-    "id": "USBtoEthernetAdapter2",
+    "id": "prod4",
     "date": "09.04.2023",
     "clicks": 1,
     "name": "USB to Ethernet Adapter7",
@@ -49,6 +52,7 @@
     "description": "【Multi-function Ethernet Adapter】 This USB ethernet adapter features 3 USB3.0 ports and a 1000Mbps RJ45 gigabit port, just connect it to your device to use high-speed network and other USB devices at the same time.\n【Fast and Stable Network】 This ethernet adapter comes with a high-speed 1000Mbps Gigabit LAN port, which provides you stable and secure high-speed network so you can easily enjoy your network time.\n【Transfer Data in Seconds】 With 3 USB3.0 ports, you will enjoy 5 times the transfer speed of USB2.0, complete your download work quickly and provide you with more convenience in both life and work. \n【Plug and Play】 This ethernet to usb adapter is easy to use, light and portable, it can be used without installing other drivers, which is simple and convenient.(Notes: Not recommended for charging.)\n【Wide compatibility】 This USB ethernet adapter compatible with most laptops, Chromebooks and tablets, working with Windows, MacOS, ChromeOS and Linux.The 3 usb 3.0 port allowing you to connect a keyboard, mouse, usb driver, external disk to your device.(Not compatible with Switch and PS4)",
     "distribuitor": "Amazon.com",
     "category": "Documentation",
-    "subcategory": false
+    "subcategory": false,
+    "link": "https://amzn.to/3MAoLSb"
   }
 ]

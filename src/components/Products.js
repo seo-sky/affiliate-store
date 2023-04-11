@@ -19,9 +19,13 @@ import Paper from '@mui/material/Paper';
 import TextField from "@mui/material/TextField";
 import allProducts from './../dbs/products.json';
 import { useSearchParams } from "react-router-dom";
+import { Modal,ModalManager,Effect} from 'react-dynamic-modal';
+import ReactplosiveModal from "reactplosive-modal";
+import Swal from 'sweetalert2'
 
 
 function Products() {
+
   
   const queryParameters = new URLSearchParams(window.location.search)
   let currentProducts;
@@ -115,6 +119,7 @@ function Products() {
     var lowerCase = e.target.value;
     setSelectSort(lowerCase);
       console.log(filteredData)
+      
   };
 
 
@@ -136,13 +141,26 @@ function checkFilter(data) {
   }
 }
 
+const [open, setOpen] = useState(false);
 
+  const handleClick = () => {
+    setOpen(true);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+  
+    setOpen(false);
+  };
+
+  const [isModalVisible, setIsModalVisible] = useState(true);
 
 return (
   <div>
+    
     <div className="mainSearch">
     
-      
       <div className="search">
         <TextField
           id="outlined-basic"
@@ -155,7 +173,7 @@ return (
           id="outlined-select-currency-native"
           select
           label="Sort"
-          defaultValue="crescator"
+          defaultValue="populare"
           onChange={selectHandler}
           SelectProps={{
             native: true,
@@ -194,7 +212,26 @@ return (
             <div className="h-bg-inner"></div>
           </div>
 
-          <a className="cart" href="#">
+          <a className="cart" onClick={() => {
+            Swal.fire({
+              title: prod.name,
+              html:
+              prod.subname +
+              '<br /><br /><h3>Description</h3> ' +
+              prod.description,
+              imageUrl: prod.image,
+              width: "90%",
+              imageWidth: 200,
+              imageHeight: 200,
+              confirmButtonText: 'Buy '+prod.price+'$ from amazon',
+              showCancelButton: true,
+            }).then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                window.open(prod.link, "_blank");
+              }
+            })
+          }}>
             <span className="price">{'$' + prod.price}</span>
             <span className="add-to-cart">
               <span className="txt">Details...</span>
@@ -215,6 +252,9 @@ return (
     
       })}
 </Grid>
+
+
+
       
 </div>
 
