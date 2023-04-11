@@ -1,8 +1,7 @@
 body, html {
-  height: 98% !important;
 }
 #root {
-  height: 100% !important;
+  margin-bottom: 20px;
 }
 .ps-sidebar-root{
   height: 100% !important;
@@ -57,4 +56,8 @@ body, html {
 
 .transitionMain{
   transition: all 0.5s;
+}
+
+.ProdDiv {
+  transition: all 0.4s;
 }

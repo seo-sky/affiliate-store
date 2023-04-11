@@ -43,7 +43,7 @@ return (
           id="outlined-basic"
           variant="outlined"
           fullWidth
-          label="Search"
+          label="Search..."
         />
         <TextField
           id="outlined-select-currency-native"

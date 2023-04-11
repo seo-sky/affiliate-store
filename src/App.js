@@ -27,6 +27,12 @@ function App() {
     //condition checking to change state from true to false and vice versa
     menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
     };
+
+    function openSub(v){
+      if(menuCollapse){
+        setMenuCollapse(false);
+      }
+    }
   // function addCategories(c){
   //   c.map(categ => {
   //     if()
@@ -54,7 +60,7 @@ function App() {
 
   return (
     <>
-    <div style={{width: '100% !important', height: '100%', minHeight: '400px' }}>
+    <div style={{width: '100% !important', height: '100%', minHeight: '400px'}}>
       
       <ProSidebarProvider style={{}}>
     <Sidebar   defaultCollapsed={menuCollapse}  style={{position: 'fixed', top: 0, borderBottomRightRadius: '30px', borderTopRightRadius: '30px'}}
@@ -78,7 +84,7 @@ function App() {
       </div>
       </Tilty>
       <Menu style={{marginTop: "10px"}}>
-      <MenuItem icon={<ShoppingCartIcon />}>Home</MenuItem>
+      <MenuItem icon={<ShoppingCartIcon />}>All Products</MenuItem>
       {categories.map(categ => {
       if(categ.subcategories.length == 0){
         return(
@@ -86,7 +92,7 @@ function App() {
         )
       } else {
         return (
-        <SubMenu label={categ.name}>
+        <SubMenu onOpenChange={(open) => {openSub(categ.subcategories)}} label={categ.name}>
         {categ.subcategories.map(subcateg => (
           <MenuItem>{subcateg}</MenuItem>
         ))}
@@ -108,9 +114,11 @@ function App() {
 
 {/* ADD SEARCH ON HEADER (CREATE NEW COMPONENT) */}
 {/* ADD GRID VIEW */}
-    <div className='transitionMain' style={{paddingLeft: menuCollapse ? '100px' : '280px', paddingRight: '20px'}}>
+    <div className='transitionMain' onClick={()=>{setMenuCollapse(true)}} style={{paddingLeft: menuCollapse ? '100px' : '280px', paddingRight: '20px'}}>
       <Search></Search>
-      <Products></Products>
+      <div className='ProdDiv' style={{ opacity: menuCollapse ? '1' : '0.2'}}>
+        <Products ></Products>
+      </div>
     </div>
     </div>
   </>
