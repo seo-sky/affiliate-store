@@ -72,7 +72,7 @@ function Products() {
   ];
 
   const [inputText, setInputText] = useState("");
-  const [selectSort, setSelectSort] = useState("");
+  const [selectSort, setSelectSort] = useState("populare");
   let inputHandler = (e) => {
     //convert input text to lower case
     e.preventDefault();
@@ -82,13 +82,41 @@ function Products() {
     console.log(lowerCase)
   };
 
+  let data = currentProducts;
+  if(selectSort == "crescator") {
+    data.sort(function (x, y) {
+      return x.price - y.price;
+    });
+  } else if(selectSort == "descrescator") {
+    data.sort(function (x, y) {
+      return y.price - x.price;
+    });
+  } else if(selectSort == "populare") {
+    data.sort(function (x, y) {
+      return y.clicks - x.clicks;
+    });
+  } else if(selectSort == "noi") {
+    data.map(item => {
+      if(new String(item.date).includes(".")){
+        let splited = new String(item.date).split('.');
+        console.log(splited);
+        item.date = new Date (parseInt(splited[2]), parseInt(splited[1]), parseInt(splited[0]));
+        console.log(item.date);
+      }
+      console.log(item.date);
+    })
+    data.sort(function (x, y) {
+      return Number(y.date) - Number(x.date);
+    });
+  }
+
   let selectHandler = (e) => {
     //convert input text to lower case
     var lowerCase = e.target.value;
     setSelectSort(lowerCase);
+      console.log(filteredData)
   };
 
-  let data = currentProducts;
 
   const filteredData = data.filter((list) => {
     //if no input the return the original
@@ -107,6 +135,9 @@ function checkFilter(data) {
     )
   }
 }
+
+
+
 return (
   <div>
     <div className="mainSearch">
@@ -124,7 +155,7 @@ return (
           id="outlined-select-currency-native"
           select
           label="Sort"
-          defaultValue="populare"
+          defaultValue="crescator"
           onChange={selectHandler}
           SelectProps={{
             native: true,
