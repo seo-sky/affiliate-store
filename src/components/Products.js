@@ -20,31 +20,36 @@ import TextField from "@mui/material/TextField";
 import allProducts from './../dbs/products.json';
 import { useSearchParams } from "react-router-dom";
 
+
 function Products() {
-  let currentProducts;
+  
   const queryParameters = new URLSearchParams(window.location.search)
-  console.log(queryParameters.get("category"))
+  let currentProducts;
+    console.log(queryParameters.get("category"))
+  
+   function load() {
+    if(queryParameters.get("category") == null || queryParameters.get("category") == "null" || queryParameters.get("category") == ""){
+      currentProducts = allProducts;
+    } else if((queryParameters.get("category") != null || queryParameters.get("category") == "null" || queryParameters.get("category") == "") && queryParameters.get("subcategory") == "none"){
+      let newObject = [];
+      allProducts.map(item => {
+        if(item.subcategory == false && item.category == queryParameters.get("category")){
+          newObject.push(item);
+        }
+      })
+      currentProducts = newObject;
+    } else if((queryParameters.get("category") != null || queryParameters.get("category") == "null" || queryParameters.get("category") == "") && queryParameters.get("subcategory") != "none"){
+      let newObject = [];
+      allProducts.map(item => {
+        if(item.subcategory == queryParameters.get("subcategory") && item.category == queryParameters.get("category")){
+          newObject.push(item);
+        }
+      })
+      currentProducts = newObject;
+    }
+  } 
 
-  if(queryParameters.get("category") == null || queryParameters.get("category") == "null" || queryParameters.get("category") == ""){
-    currentProducts = allProducts;
-  } else if((queryParameters.get("category") != null || queryParameters.get("category") == "null" || queryParameters.get("category") == "") && queryParameters.get("subcategory") == "none"){
-    let newObject = [];
-    allProducts.map(item => {
-      if(item.subcategory == false && item.category == queryParameters.get("category")){
-        newObject.push(item);
-      }
-    })
-    currentProducts = newObject;
-  } else if((queryParameters.get("category") != null || queryParameters.get("category") == "null" || queryParameters.get("category") == "") && queryParameters.get("subcategory") != "none"){
-    let newObject = [];
-    allProducts.map(item => {
-      if(item.subcategory == queryParameters.get("subcategory") && item.category == queryParameters.get("category")){
-        newObject.push(item);
-      }
-    })
-    currentProducts = newObject;
-  }
-
+  load();
 
  const currencies = [
     {
@@ -67,11 +72,20 @@ function Products() {
   ];
 
   const [inputText, setInputText] = useState("");
+  const [selectSort, setSelectSort] = useState("");
   let inputHandler = (e) => {
     //convert input text to lower case
+    e.preventDefault();
+    e.stopPropagation();
     var lowerCase = e.target.value.toLowerCase();
     setInputText(lowerCase);
     console.log(lowerCase)
+  };
+
+  let selectHandler = (e) => {
+    //convert input text to lower case
+    var lowerCase = e.target.value;
+    setSelectSort(lowerCase);
   };
 
   let data = currentProducts;
@@ -110,7 +124,8 @@ return (
           id="outlined-select-currency-native"
           select
           label="Sort"
-          defaultValue="EUR"
+          defaultValue="populare"
+          onChange={selectHandler}
           SelectProps={{
             native: true,
           }}
