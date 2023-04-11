@@ -3,6 +3,9 @@ import './App.css';
 import * as React from 'react';
 import {useState} from 'react';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import Stack from '@mui/material/Stack';
 import seosky from './images/linkedin_banner_image_1.png';
 import seosky_logo from './images/youtube_profile_image.png';
@@ -12,12 +15,41 @@ import Categories from './dbs/categories.json';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-
+import SsLogo from './images/favicon.ico';
 import Products from './components/Products.js';
 import Search from './components/HeaderSearch.js';
 
 
+
 function App() {
+  const [open, setOpen] = useState(true);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+  
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <Button size="small" onClick={() => {window.location.href = "https://seosky.ro"}}>
+        View
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   let categories = Categories;
   console.log(categories);
@@ -120,6 +152,12 @@ function App() {
         <Products ></Products>
       </div>
     </div>
+      <Snackbar style={{backgroundColor: "#fff"}}
+        open={open}
+        onClose={handleClose}
+        message="Check our website!"
+        action={action}
+      />
     </div>
   </>
   );

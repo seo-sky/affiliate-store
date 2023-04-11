@@ -32,27 +32,27 @@ return (
     {allProducts.map(prod => {
       return (
     <Grid item xs={3} style={{marginBottom: "20px"}}>
-  <div class="el-wrapper">
-        <div class="box-up">
-          <img class="img" src={prod.image} alt="" />
-          <div class="img-info">
-            <div class="info-inner">
-              <span class="p-name">{prod.name}</span>
-              <span class="p-company">{prod.distribuitor}</span>
+  <div className="el-wrapper">
+        <div className="box-up">
+          <img className="img" src={prod.image} alt="" />
+          <div className="img-info">
+            <div className="info-inner">
+              <span className="p-name">{prod.name}</span>
+              <span className="p-company">{prod.distribuitor}</span>
             </div>
-            <div class="a-size">{prod.subname}</div>
+            <div className="a-size">{prod.subname}</div>
           </div>
         </div>
 
-        <div class="box-down">
-          <div class="h-bg">
-            <div class="h-bg-inner"></div>
+        <div className="box-down">
+          <div className="h-bg">
+            <div className="h-bg-inner"></div>
           </div>
 
-          <a class="cart" href="#">
-            <span class="price">{'$' + prod.price}</span>
-            <span class="add-to-cart">
-              <span class="txt">Details...</span>
+          <a className="cart" href="#">
+            <span className="price">{'$' + prod.price}</span>
+            <span className="add-to-cart">
+              <span className="txt">Details...</span>
             </span>
           </a>
         </div>
