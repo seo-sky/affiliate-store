@@ -18,7 +18,9 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import sslogo from './images/sslogo.jpg';
 import Products from './components/Products.js';
 import Search from './components/HeaderSearch.js';
+import currentCategory from './functions/category.js';
 
+console.log(currentCategory);
 
 
 function App() {
@@ -116,17 +118,17 @@ function App() {
       </div>
       </Tilty>
       <Menu style={{marginTop: "10px"}}>
-      <MenuItem icon={<ShoppingCartIcon />}>All Products</MenuItem>
+      <MenuItem icon={<ShoppingCartIcon />} onClick={()=>{window.location.href = "/"}}>All Products</MenuItem>
       {categories.map(categ => {
       if(categ.subcategories.length == 0){
         return(
-          <MenuItem>{categ.name}</MenuItem>
+          <MenuItem onClick={()=>{window.location.href = "/?category="+categ.name+"&subcategory=none"}}>{categ.name}</MenuItem>
         )
       } else {
         return (
         <SubMenu onOpenChange={(open) => {openSub(categ.subcategories)}} label={categ.name}>
         {categ.subcategories.map(subcateg => (
-          <MenuItem>{subcateg}</MenuItem>
+          <MenuItem onClick={()=>{window.location.href = "/?category="+categ.name+"&subcategory="+subcateg}}>{subcateg}</MenuItem>
         ))}
         </SubMenu>
         )

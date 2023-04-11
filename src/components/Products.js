@@ -18,10 +18,34 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import Paper from '@mui/material/Paper';
 import TextField from "@mui/material/TextField";
 import allProducts from './../dbs/products.json';
-
+import { useSearchParams } from "react-router-dom";
 
 function Products() {
-let currentProducts = allProducts;
+  let currentProducts;
+  const queryParameters = new URLSearchParams(window.location.search)
+  console.log(queryParameters.get("category"))
+
+  if(queryParameters.get("category") == null || queryParameters.get("category") == "null" || queryParameters.get("category") == ""){
+    currentProducts = allProducts;
+  } else if((queryParameters.get("category") != null || queryParameters.get("category") == "null" || queryParameters.get("category") == "") && queryParameters.get("subcategory") == "none"){
+    let newObject = [];
+    allProducts.map(item => {
+      if(item.subcategory == false && item.category == queryParameters.get("category")){
+        newObject.push(item);
+      }
+    })
+    currentProducts = newObject;
+  } else if((queryParameters.get("category") != null || queryParameters.get("category") == "null" || queryParameters.get("category") == "") && queryParameters.get("subcategory") != "none"){
+    let newObject = [];
+    allProducts.map(item => {
+      if(item.subcategory == queryParameters.get("subcategory") && item.category == queryParameters.get("category")){
+        newObject.push(item);
+      }
+    })
+    currentProducts = newObject;
+  }
+
+
  const currencies = [
     {
       value: 'populare',
@@ -41,6 +65,34 @@ let currentProducts = allProducts;
     }
     
   ];
+
+  const [inputText, setInputText] = useState("");
+  let inputHandler = (e) => {
+    //convert input text to lower case
+    var lowerCase = e.target.value.toLowerCase();
+    setInputText(lowerCase);
+    console.log(lowerCase)
+  };
+
+  let data = currentProducts;
+
+  const filteredData = data.filter((list) => {
+    //if no input the return the original
+    if (inputText === '') {
+        return list;
+    }
+    //return the item which contains the user input
+    else {
+        return list.name.toLowerCase().includes(inputText)
+    }
+});
+function checkFilter(data) {
+  if(data.length < 1) {
+    return (
+      <h3 style={{margin: "50px auto"}}>Sorry, no products found...</h3>
+    )
+  }
+}
 return (
   <div>
     <div className="mainSearch">
@@ -52,6 +104,7 @@ return (
           variant="outlined"
           fullWidth
           label="Search..."
+          onChange={inputHandler}
         />
         <TextField
           id="outlined-select-currency-native"
@@ -72,7 +125,10 @@ return (
       </div>
     </div>
   <Grid className="gridProducts" container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} columns={{ xs: 2, sm: 3,  md: 6, xl: 12}}>
-    {currentProducts.map(prod => {
+    {checkFilter(filteredData)}
+    {
+      filteredData.map(prod => {
+      if(filteredData.length >= 1) {
       return (
     <Grid item xs={3} style={{marginBottom: "20px"}}>
   <div className="el-wrapper">
@@ -102,26 +158,20 @@ return (
         </div>
         </Grid>
         )
+      } else {
+        return (
+          <Grid item xs={3} style={{marginBottom: "20px"}}>
+            Sorry, no products found...
+        </Grid>
+        )
+
+      }
+    
       })}
-
-
-        
-
-        
-  
-  {/* <Grid item xs={6}>
-    <Item>2</Item>
-  </Grid>
-  <Grid item xs={6}>
-    <Item>3</Item>
-  </Grid>
-  <Grid item xs={6}>
-    <Item>4</Item>
-  </Grid> */}
 </Grid>
       
 </div>
-      
+
 )
 }
 
