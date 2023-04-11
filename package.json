@@ -1,5 +1,6 @@
 {
   "name": "affiliate-store",
+  "homepage": "https://store.seosky.ro/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
