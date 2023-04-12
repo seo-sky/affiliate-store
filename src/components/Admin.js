@@ -32,6 +32,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Admin() {
+  const queryParameters = new URLSearchParams(window.location.search);
   if(localStorage.getItem('login') == 'true'){
     Swal.fire({
       icon: 'success',
@@ -48,6 +49,14 @@ export default function Admin() {
       timer: 1500,
       footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
     }).then(() => {window.location.href = '/adminpanel'});
+  } else if(queryParameters.get('token_login') == adminToken[0].token){
+    Swal.fire({
+      icon: 'success',
+      title: 'Succes!',
+      text: 'Autentificare...',
+      timer: 1500,
+      footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
+    }).then(() => {window.location.href = '/adminpanel?token_login='+adminToken[0].token});
   }
   const handleSubmit = (event) => {
     event.preventDefault();
