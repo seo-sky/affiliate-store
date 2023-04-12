@@ -19,6 +19,7 @@ import sslogo from './images/sslogo.jpg';
 import Products from './components/Products.js';
 import Search from './components/HeaderSearch.js';
 import currentCategory from './functions/category.js';
+import GridViewIcon from '@mui/icons-material/GridView';
 
 console.log(currentCategory);
 
@@ -118,7 +119,7 @@ function App() {
       </div>
       </Tilty>
       <Menu style={{marginTop: "10px"}}>
-      <MenuItem icon={<ShoppingCartIcon />} onClick={()=>{window.location.href = "/"}}>All Products</MenuItem>
+      <MenuItem icon={<GridViewIcon />} onClick={()=>{window.location.href = "/"}}>All Products</MenuItem>
       {categories.map(categ => {
       if(categ.subcategories.length == 0){
         return(
