@@ -36,6 +36,8 @@ import PivotTableChartIcon from '@mui/icons-material/PivotTableChart';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import HistoryToggleOffIcon from '@mui/icons-material/HistoryToggleOff';
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function AdminPanel(){
   const queryParameters = new URLSearchParams(window.location.search)
@@ -96,6 +98,27 @@ function AdminPanel(){
       getLocation();
     }, []);
 
+
+
+
+
+
+
+
+
+
+
+
+    function logout() {
+      sessionStorage.clear();
+      localStorage.clear();
+      window.location.href = "/"
+    }
+
+    function goToStore() {
+      window.location.href = "/"
+    }
+
   return (
     <div>
 
@@ -130,6 +153,8 @@ function AdminPanel(){
       <MenuItem icon={<ViewListIcon />}>Produse</MenuItem>
       <MenuItem icon={<HistoryToggleOffIcon />}>Admin Log</MenuItem>
       <MenuItem icon={<SettingsSuggestIcon />}>Setari</MenuItem>
+      <MenuItem icon={<LogoutIcon />} onClick={() => {logout()}}>Deconectare</MenuItem>
+      <MenuItem icon={<FirstPageIcon />} onClick={() => {goToStore()}}>Magazin</MenuItem>
       {/* <SubMenu label="Charts">
       <MenuItem>Pie charts </MenuItem>
       <MenuItem> Line charts </MenuItem>
