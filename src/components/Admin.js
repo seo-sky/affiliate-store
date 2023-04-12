@@ -62,6 +62,28 @@ export default function Admin() {
             icon: 'success',
             title: 'Succes!',
             text: 'Autentificare...',
+            timer: 3500,
+            footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
+          });
+        } else if (data.get("email") != account.email && data.get("password") != account.password) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Eroare!',
+            text: 'Adresa de email si parola nu corespund!',
+            footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
+          });
+        } else if (data.get("email") != account.email ) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Eroare!',
+            text: 'Adresa de email corespunde!',
+            footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
+          });
+        } else if (data.get("password") != account.password) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Eroare!',
+            text: 'Parola nu corespunde!',
             footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
           });
         }
