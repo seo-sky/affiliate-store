@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Swal from 'sweetalert2';
 import adminData from "./../dbs/admin.json";
+import adminToken from "./../dbs/admin_token.json";
 
 function Copyright(props) {
   return (
@@ -31,6 +32,15 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Admin() {
+  if(localStorage.getItem('login') == 'true'){
+    Swal.fire({
+      icon: 'success',
+      title: 'Succes!',
+      text: 'Autentificare...',
+      timer: 1500,
+      footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
+    }).then(() => {window.location.href = '/adminpanel'});
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -58,13 +68,16 @@ export default function Admin() {
     } else {
       adminData.map(account => {
         if(data.get("email") == account.email && data.get("password") == account.password){
+          if(data.get("remember") == "remember"){
+            localStorage.setItem('login', true);
+          }
           Swal.fire({
             icon: 'success',
             title: 'Succes!',
             text: 'Autentificare...',
-            timer: 3500,
+            timer: 1500,
             footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
-          });
+          }).then(() => {window.location.href = '/adminpanel?token_login='+adminToken[0].token});
         } else if (data.get("email") != account.email && data.get("password") != account.password) {
           Swal.fire({
             icon: 'error',
@@ -100,6 +113,7 @@ export default function Admin() {
     console.log({
       email: data.get('email'),
       password: data.get('password'),
+      remember: data.get('remember'),
     });
   };
 
@@ -124,7 +138,6 @@ export default function Admin() {
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
-              required
               fullWidth
               id="email"
               label="Email Address"
@@ -134,13 +147,17 @@ export default function Admin() {
             />
             <TextField
               margin="normal"
-              required
               fullWidth
               name="password"
               label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
+            />
+            <FormControlLabel
+              name="remember"
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
             />
             <Button
               type="submit"

@@ -5,6 +5,7 @@ import './index.css';
 import './css/404.css'
 import App from './App.js';
 import Admin from './components/Admin.js';
+import AdminPanel from './components/AdminPanel.js';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -14,6 +15,7 @@ root.render(
       <Routes>
         <Route path="/" element={<App /> } />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/adminpanel" element={<AdminPanel />} />
         <Route path="/*" element={<PageNotFound />} />
       </Routes>
     </Router>
