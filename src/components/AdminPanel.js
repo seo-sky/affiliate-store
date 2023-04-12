@@ -18,7 +18,7 @@ import adminToken from "./../dbs/admin_token.json";
 
 function AdminPanel(){
   return (
-    <div>Hello from admin panel!</div>
+    <div>Hello from admin panel!!</div>
   )
 }
 
