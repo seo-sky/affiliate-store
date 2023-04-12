@@ -76,26 +76,16 @@ function AdminPanel(){
 
     // Get ip
     const [ip, setIP] = useState("");
-    const [location, setLocation] = useState("");
-    const [net, setNet] = useState("");
     const getData = async () => {
       const res = await axios.get("https://api.ipify.org/?format=json");
       console.log(res.data);
       setIP(res.data.ip);
       
-    };
-    
-    const getLocation = async () => {
-      const res = await axios.get("http://ip-api.com/json/"+ip)
-      console.log(res.data)
-      setLocation(res.data.country + " \n " + res.data.city);
-      setNet(res.data.org);
     }
 
     useEffect(() => {
       //passing getData method to the lifecycle method
       getData();
-      getLocation();
     }, []);
 
 
@@ -145,7 +135,7 @@ function AdminPanel(){
       </Tilty>
       <Menu style={{marginTop: "10px"}}>
         <br />
-      <MenuItem disabled icon={<AdminPanelSettingsIcon />}>{ip} <br /> {location} <br /> {net}</MenuItem>
+      <MenuItem disabled icon={<AdminPanelSettingsIcon />}>{ip}</MenuItem>
       <br />
       <br />
       <MenuItem icon={<QueryStatsIcon/>}>Statistici</MenuItem>
