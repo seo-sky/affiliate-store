@@ -40,6 +40,14 @@ export default function Admin() {
       timer: 1500,
       footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
     }).then(() => {window.location.href = '/adminpanel'});
+  } else if(sessionStorage.getItem('currentlog') == 'true'){
+    Swal.fire({
+      icon: 'success',
+      title: 'Succes!',
+      text: 'Autentificare...',
+      timer: 1500,
+      footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
+    }).then(() => {window.location.href = '/adminpanel'});
   }
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -77,7 +85,10 @@ export default function Admin() {
             text: 'Autentificare...',
             timer: 1500,
             footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
-          }).then(() => {window.location.href = '/adminpanel?token_login='+adminToken[0].token});
+          }).then(() => {
+            window.location.href = '/adminpanel';
+            sessionStorage.setItem("currentlog", true);
+          });
         } else if (data.get("email") != account.email && data.get("password") != account.password) {
           Swal.fire({
             icon: 'error',

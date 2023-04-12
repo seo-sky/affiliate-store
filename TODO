@@ -1,2 +1,4 @@
-Admin panel
+Admin panel (on logout:
+sessionStorage.clear();
+localStorage.clear();)
 logo 192, 512 in public

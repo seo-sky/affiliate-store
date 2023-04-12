@@ -17,6 +17,15 @@ import adminData from "./../dbs/admin.json";
 import adminToken from "./../dbs/admin_token.json";
 
 function AdminPanel(){
+  const queryParameters = new URLSearchParams(window.location.search)
+  if(localStorage.getItem('login') != 'true'){
+    
+    if(queryParameters.get('token_login') != adminToken[0].token){
+      if(sessionStorage.getItem('currentlog') != 'true') {
+        window.location.href = "/admin";
+      }
+    }
+  }
   return (
     <div>Hello from admin panel!!</div>
   )
