@@ -1,6 +1,4 @@
-Admin panel (on logout:
-sessionStorage.clear();
-localStorage.clear();)
+Admin panel
 logo 192, 512 in public
 
 produse adaugate
