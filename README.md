@@ -26,16 +26,19 @@ yarn start
 ```
 This will start the application on http://localhost:3000 in your web browser.
 
-# Features
-This application has the following features:
+# Dev
+For Production:
 
-- User authentication using the SeoSky API
-- Displaying a list of SeoSky products available for promotion
-- Generating unique referral links for each user
-- Copying referral links to the clipboard for easy sharing
-- Tracking clicks and conversions for each referral link
-- Displaying earnings and payment information for each user
-- Updating user account information
+## - Step 1
+
+  - ``` npm run build ```
+## - Step 2
+  - Copiaza tot din ``` /build ```
+## - Step 3
+  - Mergi in ``` /server ``` si pune-le in ``` /public ```, ASIGURA-TE CA TOTUL ESTE PUS LA PUNCT PENTRU ``` PRODUCTION ``` (trebuie schimbat unde foloseste express fisierele de la react din ```client```, in ```/public``` dupa ce muti fisierele)
+## - Step 3
+  - Incarca fisierele in server!
+
 # Contributing
 If you would like to contribute to this project, please open an issue or submit a pull request on GitHub.
 

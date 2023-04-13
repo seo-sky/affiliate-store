@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import * as PouchDB from 'pouchdb';
 import * as React from 'react';
 import {useState} from 'react';
 import Button from '@mui/material/Button';
@@ -20,24 +21,71 @@ import Products from './components/Products.js';
 import Search from './components/HeaderSearch.js';
 import currentCategory from './functions/category.js';
 import GridViewIcon from '@mui/icons-material/GridView';
+import { useEffect } from 'react';
 
 console.log(currentCategory);
 
 
-function App() {
-  const [open, setOpen] = useState(true);
 
-  const handleClick = () => {
-    setOpen(true);
-  };
+
+
+
+
+
+
+function App() {
+
+  const [categories, setCategories2] = useState([]);
+
+  function putData(data){
+    return data;
+  }
+  const [data, setData] = React.useState(null);
+
+  React.useEffect(() => {
+    fetch("/api")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.message)
+        setData(data.message)});
+  }, []);
+  const PouchDB = require('pouchdb').default;
+  
+  const [once, setOnce] = useState(true)
+  
+  const [open, setOpen] = useState(true);
+  const [fill, setFill] = useState(false);
+  
+  
+  let db = new PouchDB('Categories');
+  
+    let categoriesDoc = [
+        {
+          "_id": "documentation",
+          "name": "Documentation",
+          "age": 3,
+          "subcategories": []
+          }, {
+              "_id": "tech",
+              "name": "Tech",
+              "subcategories": [
+                  "Webcam"
+                ]
+              }
+            ];
+  db.bulkDocs(categoriesDoc);
+            
+            const handleClick = () => {
+              setOpen(true);
+            };
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-  
+    
     setOpen(false);
   };
-
+  
   const action = (
     <React.Fragment>
       <Button size="small" onClick={() => {window.location.href = "https://seosky.ro"}}>
@@ -53,9 +101,25 @@ function App() {
       </IconButton>
     </React.Fragment>
   );
+  
+  db.allDocs({
+    include_docs: true,
+    attachments: true
+  }).then(function (result) {
+    if(once){
+      setCategories2(result.rows);
+      setOnce(false);
+    }
+    
+    setFill(true);
+  }).catch(function (err) {
+    console.log(err);
+  });
 
-  let categories = Categories;
   console.log(categories);
+  
+
+  
   const [menuCollapse, setMenuCollapse] = useState(true)
 
   const menuIconClick = () => {
@@ -92,7 +156,7 @@ function App() {
   //   //   i += 1;
   //   // }
   // }
-
+  if(fill){
   return (
     <>
     <div style={{width: '100% !important', height: '100%', minHeight: '400px'}}>
@@ -120,21 +184,26 @@ function App() {
       </Tilty>
       <Menu style={{marginTop: "10px"}}>
       <MenuItem icon={<GridViewIcon />} onClick={()=>{window.location.href = "/"}}>All Products</MenuItem>
+      
+
       {categories.map(categ => {
-      if(categ.subcategories.length == 0){
+      console.log(categ.doc);
+      if(categ.doc.subcategories.length == 0){
         return(
-          <MenuItem onClick={()=>{window.location.href = "/?category="+categ.name+"&subcategory=none"}}>{categ.name}</MenuItem>
+          <MenuItem onClick={()=>{window.location.href = "/?category="+categ.doc.name+"&subcategory=none"}}>{categ.doc.name}</MenuItem>
         )
       } else {
         return (
-        <SubMenu onOpenChange={(open) => {openSub(categ.subcategories)}} label={categ.name}>
-        {categ.subcategories.map(subcateg => (
-          <MenuItem onClick={()=>{window.location.href = "/?category="+categ.name+"&subcategory="+subcateg}}>{subcateg}</MenuItem>
+        <SubMenu onOpenChange={(open) => {openSub(categ.doc.subcategories)}} label={categ.doc.name}>
+        {categ.doc.subcategories.map(subcateg => (
+          <MenuItem onClick={()=>{window.location.href = "/?category="+categ.doc.name+"&subcategory="+subcateg}}>{subcateg}</MenuItem>
         ))}
         </SubMenu>
         )
       }
     })}
+
+
       {/* <SubMenu label="Charts">
       <MenuItem>Pie charts </MenuItem>
       <MenuItem> Line charts </MenuItem>
@@ -165,5 +234,5 @@ function App() {
   </>
   );
 }
-
+}
 export default App;
