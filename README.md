@@ -29,14 +29,14 @@ This will start the application on http://localhost:3000 in your web browser.
 # Dev
 For Production:
 
-## - Step 1
+## Step 1 (build app)
 
   - ``` npm run build ```
-## - Step 2
+## Step 2 (copy result)
   - Copiaza tot din ``` /build ```
-## - Step 3
+## Step 3 (set files for production server-side)
   - Mergi in ``` /server ``` si pune-le in ``` /public ```, ASIGURA-TE CA TOTUL ESTE PUS LA PUNCT PENTRU ``` PRODUCTION ``` (trebuie schimbat unde foloseste express fisierele de la react din ```client```, in ```/public``` dupa ce muti fisierele)
-## - Step 3
+## Step 4 (upload app)
   - Incarca fisierele in server!
 
 # Contributing
