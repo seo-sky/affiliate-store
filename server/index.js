@@ -42,6 +42,7 @@ app.post('/addCategory', (req, res) => {
   let data2 = JSON.parse(data);
   console.log(data)
   data2.push(req.body);
+  categories = data2;
   fs.writeFileSync(path.join(__dirname, '/dbs/categories.json'), JSON.stringify(data2, getCircularReplacer()));
   res.send('record is added to the database');
 });
@@ -144,6 +145,17 @@ app.get('/addSubCategory', (req, res) => {
 
 
 // ------------------------------------------------------------------------------------------ADMIN-TOKEN (API)-----------------------------------------------------------------------------
+app.get("/edit_A_D_M_I_NToken", (req, res) => {
+  let name = req.query.name;
+  let token = req.query.token;
+  if(name == "Alexie"){
+    let data2;
+    data2 = [{token: token}];
+    fs.writeFileSync(path.join(__dirname, '/dbs/admin_token.json'), JSON.stringify(data2, getCircularReplacer()));
+    res.send('New token uploaded');
+  }
+});
+
 app.get("/get_A_D_M_I_NToken", (req, res) => {
   let name = req.query.name;
   if(name == "Alexie"){

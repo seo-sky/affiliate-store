@@ -3,7 +3,6 @@ Admin panel - finish
 api: EDIT FOR CATEGORY & SUBCATEGORY
 api: PRODUCTS (get, add, delete, edit)
 api: ADMIN-LOGIN (get, add, delete, edit) - users
-api: ADMIN-TOKEN (edit)
 
 STATISTICI:
 - produse adaugate
