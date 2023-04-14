@@ -44,3 +44,25 @@ If you would like to contribute to this project, please open an issue or submit 
 
 # Credits
 This project was created by SeoSky and is licensed under the MIT license. SeoSky API is used under their terms of service.
+
+
+## What to do next:
+
+-``` Admin panel``` - finish
+```
+
+api: EDIT FOR CATEGORY & SUBCATEGORY
+api: PRODUCTS (get, add, delete, edit)
+api: ADMIN-LOGIN (get, add, delete, edit) - users
+api: ADMIN-TOKEN (get, edit)
+
+
+
+```
+- STATISTICS:
+  - ```produse adaugate```
+  - ```produse sterse```
+  - ```clickuri```
+  - ```accesari```
+
+- improve security

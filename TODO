@@ -1,12 +1,12 @@
-Admin panel
-logo 192, 512 in public
+Admin panel - finish
 
+api: EDIT FOR CATEGORY & SUBCATEGORY
+api: PRODUCTS (get, add, delete, edit)
+api: ADMIN-LOGIN (get, add, delete, edit) - users
+api: ADMIN-TOKEN (get, edit)
 
-API - FROM SERVER localdb json, read and write!
-
-NEED TO MAKE EDIT FOR CATEGORY & SUBCATEGORY
-
-produse adaugate
-produse sterse
-clickuri
-accesari
+STATISTICI:
+- produse adaugate
+- produse sterse
+- clickuri
+- accesari
