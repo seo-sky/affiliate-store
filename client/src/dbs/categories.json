@@ -1,27 +1,34 @@
 [
-  {
-      "id": "charts",
-     "name":"Charts",
-     "subcategories":[
-        "Pie charts",
-        "Line charts"
-     ]
-  },
-  {
-    "id": "documentation",
-    "name":"Documentation",
-    "subcategories":[]
- },
- {
-   "id": "calendar",
-  "name":"Calendar",
-  "subcategories":[]
-  },
-  {
-   "id": "tech",
-  "name":"Tech",
-  "subcategories":[
-     "Webcam"
-  ]
-}
+   {
+      "id":1,
+      "name":"Charts",
+      "subcategories":[
+         "Pie charts",
+         "Line charts"
+      ]
+   },
+   {
+      "id":2,
+      "name":"Documentation",
+      "subcategories":[
+         
+      ]
+   },
+   {
+      "id":3,
+      "name":"Calendar",
+      "subcategories":[
+         
+      ]
+   },
+   {
+      "id":4,
+      "name":"Tech",
+      "subcategories":[
+         "Webcam"
+      ]
+   }
 ]
+
+
+
