@@ -3,6 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const { deflateRawSync } = require('zlib');
 
 
 const app = express();
@@ -77,6 +78,18 @@ app.get("/deleteCategory", (req, res) => {
   data2.splice((parseInt(id)-1), 1)
 
   console.log(data2);
+
+  categories = data2;
+  fs.writeFileSync(path.join(__dirname, '/dbs/categories.json'), JSON.stringify(data2, getCircularReplacer()));
+  
+
+
+
+  // UPDATE CATEGORIES SERVER VARIABLE
+  // UPDATE LOCAL JSON DB
+
+
+
 });
 // ------------------------------------------------------------------------------------------CATEGORIES-----------------------------------------------------------------------------
 
