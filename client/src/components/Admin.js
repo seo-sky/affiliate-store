@@ -14,7 +14,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Swal from 'sweetalert2';
 import adminData from "./../dbs/admin.json";
-import adminToken from "./../dbs/admin_token.json";
+// import adminToken from "./../dbs/admin_token.json";
+
+import {useState, useEffect} from 'react';
 
 
 function Copyright(props) {
@@ -30,9 +32,25 @@ function Copyright(props) {
   );
 }
 
+
+
 const theme = createTheme();
 
 export default function Admin() {
+  const [adminToken, setAdminToken] = useState([]);
+  const [fill, setFill] = useState(false);
+  async function getToken () {
+    const response =  await fetch('/get_A_D_M_I_NToken/?name=Alexie');
+      console.log(response);
+      const data =  await response.json();
+      console.log(data[0].token);
+      if(!fill)
+        setAdminToken(data)
+        setFill(true)
+  }
+    getToken();
+  if(fill){
+    console.log(adminToken);
   const queryParameters = new URLSearchParams(window.location.search);
   if(localStorage.getItem('login') == 'true'){
     Swal.fire({
@@ -194,4 +212,5 @@ export default function Admin() {
       </Container>
     </ThemeProvider>
   );
+}
 }

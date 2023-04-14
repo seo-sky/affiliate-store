@@ -60,6 +60,8 @@ async function addCategory(category) {
 
 function App() {
 
+  
+
   const [categories, setCategories] = useState([]);
   
   const [open, setOpen] = useState(true);
@@ -77,6 +79,9 @@ function App() {
     }
 if(!fill)
   getData();
+
+
+
        
        
 
