@@ -103,6 +103,17 @@ app.get('/addSubCategory', (req, res) => {
   res.send('record is added to the database');
 });
 
+app.get('/editSubCategory', (req, res) => {
+  let id = req.query.category_id;
+  let subid = req.query.subcategory_id;
+  let name = req.query.name;
+  const data = fs.readFileSync(path.join(__dirname, '/dbs/categories.json'), 'utf8');
+  console.log("reading DB");
+  let data2 = JSON.parse(data);
+  data2[parseInt(id)-1].subcategories[parseInt(subid)-1] = name;
+  fs.writeFileSync(path.join(__dirname, '/dbs/categories.json'), JSON.stringify(data2, getCircularReplacer()));
+  res.send('record is added to the database');
+});
 
 
 
@@ -110,8 +121,7 @@ app.get('/addSubCategory', (req, res) => {
 
 
 
-
-// NEED TO MAKE EDIT FOR CATEGORY & SUBCATEGORY
+// NEED TO MAKE EDIT FOR CATEGORY with post json array (object)
 
 
 
