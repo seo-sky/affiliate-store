@@ -48,7 +48,7 @@ This project was created by SeoSky and is licensed under the MIT license. SeoSky
 
 ## What to do next:
 
--``` Admin panel``` - finish
+- ```Admin panel``` - finish
 ```
 
 api: EDIT FOR CATEGORY & SUBCATEGORY
