@@ -34,12 +34,6 @@ app.use(bodyParser.json());
 // ------------------------------------------------------------------------------------------CATEGORIES----------------------------------------------------------------------------- 
 app.post('/addCategory', (req, res) => {
 
-  // Output the book to the console for debugging
-
-
-  // categories.push(JSON.parse(req.body));
-  // console.log(categories);
-  // read db
   const data = fs.readFileSync(path.join(__dirname, '/dbs/categories.json'), 'utf8');
   console.log("reading DB");
 
@@ -72,24 +66,38 @@ app.get("/deleteCategory", (req, res) => {
   console.log(id)
   const data = fs.readFileSync(path.join(__dirname, '/dbs/categories.json'), 'utf8');
   console.log("reading DB");
-
   let data2 = JSON.parse(data);
-
   data2.splice((parseInt(id)-1), 1)
-
   console.log(data2);
-
   categories = data2;
   fs.writeFileSync(path.join(__dirname, '/dbs/categories.json'), JSON.stringify(data2, getCircularReplacer()));
-  
+  res.send('record deleted from the database');
+});
 
 
+app.get("/deleteSubCategory", (req, res) => {
+  let id = req.query.category_id;
+  let subid = req.query.subcategory_id;
+  console.log(id)
+  const data = fs.readFileSync(path.join(__dirname, '/dbs/categories.json'), 'utf8');
+  console.log("reading DB");
+  let data2 = JSON.parse(data);
+  data2[parseInt(id)-1].subcategories.splice((parseInt(subid)-1), 1)
+  console.log(data2);
+  categories = data2;
+  fs.writeFileSync(path.join(__dirname, '/dbs/categories.json'), JSON.stringify(data2, getCircularReplacer()));
+  res.send('record deleted from the database');
+});
 
-  // UPDATE CATEGORIES SERVER VARIABLE
-  // UPDATE LOCAL JSON DB
-
-
-
+app.get('/addSubCategory', (req, res) => {
+  let id = req.query.category_id;
+  let name = req.query.name;
+  const data = fs.readFileSync(path.join(__dirname, '/dbs/categories.json'), 'utf8');
+  console.log("reading DB");
+  let data2 = JSON.parse(data);
+  data2[parseInt(id)-1].subcategories.push(name);
+  fs.writeFileSync(path.join(__dirname, '/dbs/categories.json'), JSON.stringify(data2, getCircularReplacer()));
+  res.send('record is added to the database');
 });
 // ------------------------------------------------------------------------------------------CATEGORIES-----------------------------------------------------------------------------
 
