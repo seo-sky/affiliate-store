@@ -1,7 +1,7 @@
 import logo from './../logo.svg';
 import './css/Products.css';
 import * as React from 'react';
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import seosky from './../images/linkedin_banner_image_1.png';
@@ -9,6 +9,7 @@ import seosky_logo from './../images/youtube_profile_image.png';
 import { ProSidebarProvider, Sidebar, Menu, MenuItem, SubMenu, useProSidebar } from 'react-pro-sidebar';
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
+import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Tilty from 'react-tilty';
 import Categories from './../dbs/categories.json';
@@ -17,7 +18,6 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import Paper from '@mui/material/Paper';
 import TextField from "@mui/material/TextField";
-import allProducts from './../dbs/products.json';
 import { useSearchParams } from "react-router-dom";
 import { Modal,ModalManager,Effect} from 'react-dynamic-modal';
 import ReactplosiveModal from "reactplosive-modal";
@@ -25,35 +25,63 @@ import Swal from 'sweetalert2'
 
 
 function Products() {
-
   
+  const [allProducts, setProducts] = useState([]);
+  const [currentProducts, setCurrentProducts] = useState([]);
+  const [fillProducts, setfillProducts] = useState(false);
+  const [once, setOnce] = useState(true);
   const queryParameters = new URLSearchParams(window.location.search)
-  let currentProducts;
-    console.log(queryParameters.get("category"))
-  
-   function load() {
-    if(queryParameters.get("category") == null || queryParameters.get("category") == "null" || queryParameters.get("category") == ""){
-      currentProducts = allProducts;
-    } else if((queryParameters.get("category") != null || queryParameters.get("category") == "null" || queryParameters.get("category") == "") && queryParameters.get("subcategory") == "none"){
-      let newObject = [];
-      allProducts.map(item => {
-        if(item.subcategory == false && item.category == queryParameters.get("category")){
-          newObject.push(item);
-        }
-      })
-      currentProducts = newObject;
-    } else if((queryParameters.get("category") != null || queryParameters.get("category") == "null" || queryParameters.get("category") == "") && queryParameters.get("subcategory") != "none"){
-      let newObject = [];
-      allProducts.map(item => {
-        if(item.subcategory == queryParameters.get("subcategory") && item.category == queryParameters.get("category")){
-          newObject.push(item);
-        }
-      })
-      currentProducts = newObject;
-    }
-  } 
+  console.log(queryParameters.get("category"))
 
-  load();
+  async function getProducts(){
+    const responseProducts =  await fetch('/getAllProducts');
+    console.log(responseProducts);
+    const dataProducts =  await responseProducts.json();
+    console.log(dataProducts);
+      setfillProducts(true);
+      setProducts(dataProducts);
+  }
+  if(!fillProducts)
+    getProducts(); 
+  
+  if(fillProducts){
+    if(once) {
+      console.log("CURRENT->",allProducts)
+      if(queryParameters.get("category") == null || queryParameters.get("category") == "null" || queryParameters.get("category") == ""){
+        setCurrentProducts(allProducts);
+        console.log("--------------------ALL")
+      } else if((queryParameters.get("category") != null || queryParameters.get("category") == "null" || queryParameters.get("category") == "") && queryParameters.get("subcategory") == "none"){
+        console.log("--------------------ALL")
+        let newObject = [];
+        allProducts.map(item => {
+          if(item.subcategory == false && item.category == queryParameters.get("category")){
+            newObject.push(item);
+          }
+        })
+        console.log(newObject)
+        setCurrentProducts(newObject);
+      } else if((queryParameters.get("category") != null || queryParameters.get("category") == "null" || queryParameters.get("category") == "") && queryParameters.get("subcategory") != "none"){
+        console.log("--------------------ALL")
+        let newObject = [];
+        allProducts.map(item => {
+          if(item.subcategory == queryParameters.get("subcategory") && item.category == queryParameters.get("category")){
+            newObject.push(item);
+          }
+        })
+        console.log(newObject)
+        setCurrentProducts(newObject);
+      }
+      setOnce(false);
+    }
+  }
+
+
+  
+  
+  
+   
+
+  
 
  const currencies = [
     {
@@ -74,9 +102,11 @@ function Products() {
     }
     
   ];
-
+  
+  const [isModalVisible, setIsModalVisible] = useState(true);
   const [inputText, setInputText] = useState("");
   const [selectSort, setSelectSort] = useState("populare");
+  const [open, setOpen] = useState(false);
   let inputHandler = (e) => {
     //convert input text to lower case
     e.preventDefault();
@@ -85,7 +115,8 @@ function Products() {
     setInputText(lowerCase);
     console.log(lowerCase)
   };
-
+     
+  
   let data = currentProducts;
   if(selectSort == "crescator") {
     data.sort(function (x, y) {
@@ -114,6 +145,7 @@ function Products() {
     });
   }
 
+
   let selectHandler = (e) => {
     //convert input text to lower case
     var lowerCase = e.target.value;
@@ -141,7 +173,6 @@ function checkFilter(data) {
   }
 }
 
-const [open, setOpen] = useState(false);
 
   const handleClick = () => {
     setOpen(true);
@@ -154,8 +185,7 @@ const [open, setOpen] = useState(false);
     setOpen(false);
   };
 
-  const [isModalVisible, setIsModalVisible] = useState(true);
-
+if(fillProducts) {
 return (
   <div>
     
@@ -259,6 +289,13 @@ return (
 </div>
 
 )
+} else {
+  return (
+    <Box sx={{ position: 'absolute', top:"50%", left: "50%" }}>
+      <CircularProgress />
+    </Box>
+  )
+}
 }
 
 export default Products;

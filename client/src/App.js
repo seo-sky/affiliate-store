@@ -73,13 +73,16 @@ function App() {
       console.log(response);
       const data =  await response.json();
       console.log(data);
-      if(!fill)
+
+      if(!fill){
         setCategories(data);
         setFill(true)
+      }
     }
-if(!fill)
-  getData();
 
+if(!fill) {
+  getData();
+}
 
 
        

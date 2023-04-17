@@ -10,6 +10,7 @@ const app = express();
 
 // Server DB
 let categories = [];
+let products = [];
 let admin_token = [];
 
 
@@ -141,7 +142,22 @@ app.get('/editSubCategory', (req, res) => {
 
 
 // ------------------------------------------------------------------------------------------PRODUCTS (API)-----------------------------------------------------------------------------
-
+app.get("/getAllProducts", (req, res) => {
+  if(products.length == 0){
+    try {
+      const data = fs.readFileSync(path.join(__dirname, '/dbs/products.json'), 'utf8');
+      console.log("Uploading backup DB");
+      products = JSON.parse(data);
+      
+      res.send(JSON.stringify(products, getCircularReplacer()));
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    console.log("DB is on server")
+    res.send(JSON.stringify(products, getCircularReplacer()));
+  }
+});
 // ------------------------------------------------------------------------------------------PRODUCTS (API)-----------------------------------------------------------------------------
 
 
