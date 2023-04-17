@@ -52,7 +52,7 @@ This project was created by SeoSky and is licensed under the MIT license. SeoSky
 ```
 
 api: EDIT FOR CATEGORY
-api: PRODUCTS (get, add, delete, edit)
+api: PRODUCTS (add, delete, edit)
 api: ADMIN-LOGIN (get, add, delete, edit) - users
 
 ```
