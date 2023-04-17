@@ -38,6 +38,12 @@ import HistoryToggleOffIcon from '@mui/icons-material/HistoryToggleOff';
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LogoutIcon from '@mui/icons-material/Logout';
+import Stats from './adminpanel/stats.js';
+import Categories from './adminpanel/categories.js';
+import Products from './adminpanel/products.js';
+import AdminLog from './adminpanel/log.js';
+import Settings from './adminpanel/settings.js';
+
 
 function AdminPanel(){
   const queryParameters = new URLSearchParams(window.location.search)
@@ -51,7 +57,8 @@ function AdminPanel(){
   }
 
 
-  const [menuCollapse, setMenuCollapse] = useState(true)
+  const [menuCollapse, setMenuCollapse] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState("stats");
 
   const menuIconClick = () => {
     //condition checking to change state from true to false and vice versa
@@ -63,15 +70,6 @@ function AdminPanel(){
         setMenuCollapse(false);
       }
     }
-
-
-    let categories = [
-      {
-        name: "Dashboard",
-        subcategories: []
-      }
-    ]
-    console.log(categories)
 
 
     // Get ip
@@ -87,16 +85,6 @@ function AdminPanel(){
       //passing getData method to the lifecycle method
       getData();
     }, []);
-
-
-
-
-
-
-
-
-
-
 
 
     function logout() {
@@ -138,11 +126,11 @@ function AdminPanel(){
       <MenuItem disabled icon={<AdminPanelSettingsIcon />}>{ip}</MenuItem>
       <br />
       <br />
-      <MenuItem icon={<QueryStatsIcon/>}>Statistici</MenuItem>
-      <MenuItem icon={<PivotTableChartIcon />}>Categorii</MenuItem>
-      <MenuItem icon={<ViewListIcon />}>Produse</MenuItem>
-      <MenuItem icon={<HistoryToggleOffIcon />}>Admin Log</MenuItem>
-      <MenuItem icon={<SettingsSuggestIcon />}>Setari</MenuItem>
+      <MenuItem icon={<QueryStatsIcon/>} onClick={() => {setSelectedCategory("stats")}}>Statistici</MenuItem>
+      <MenuItem icon={<PivotTableChartIcon /> } onClick={() => {setSelectedCategory("categories")}}>Categorii</MenuItem>
+      <MenuItem icon={<ViewListIcon />} onClick={() => {setSelectedCategory("products")}}>Produse</MenuItem>
+      <MenuItem icon={<HistoryToggleOffIcon />} onClick={() => {setSelectedCategory("log")}}>Admin Log</MenuItem>
+      <MenuItem icon={<SettingsSuggestIcon />} onClick={() => {setSelectedCategory("settings")}}>Setari</MenuItem>
       <MenuItem icon={<LogoutIcon />} onClick={() => {logout()}}>Deconectare</MenuItem>
       <MenuItem icon={<FirstPageIcon />} onClick={() => {goToStore()}}>Magazin</MenuItem>
       {/* <SubMenu label="Charts">
@@ -162,21 +150,25 @@ function AdminPanel(){
             key="settings"
             icon={<SettingsSuggestIcon  />}
             tooltipTitle="Setari"
+            onClick={() => {setSelectedCategory("settings")}}
           />
           <SpeedDialAction
             key="addproduct"
             icon={<AddBoxIcon />}
             tooltipTitle="Produs nou"
+            onClick={() => {setSelectedCategory("products")}}
           />
           <SpeedDialAction
             key="addcategory"
             icon={<PivotTableChartIcon  />}
             tooltipTitle="Categorie noua"
+            onClick={() => {setSelectedCategory("categories")}}
           />
           <SpeedDialAction
             key="adminlog"
             icon={<AdminPanelSettingsIcon  />}
             tooltipTitle="Admin Log"
+            onClick={() => {setSelectedCategory("log")}}
           />
       </SpeedDial>
     </Box>
@@ -190,6 +182,11 @@ function AdminPanel(){
 
 <div className='transitionMain' onClick={()=>{setMenuCollapse(true)}} style={{paddingLeft: menuCollapse ? '100px' : '280px', paddingRight: '20px'}}>
     <h3 className='animate-charcter'>Admin Panel</h3>
+      {selectedCategory == 'stats' ? <Stats></Stats> : void(0)}
+      {selectedCategory == 'categories' ? <Categories></Categories> : void(0)}
+      {selectedCategory == 'products' ? <Products></Products> : void(0)}
+      {selectedCategory == 'log' ? <AdminLog></AdminLog> : void(0)}
+      {selectedCategory == 'settings' ? <Settings></Settings> : void(0)}
 </div>
     
 
