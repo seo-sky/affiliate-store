@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Swal from 'sweetalert2';
-import adminData from "./../dbs/admin.json";
+// import adminData from "./../dbs/admin.json";
 // import adminToken from "./../dbs/admin_token.json";
 
 import {useState, useEffect} from 'react';
@@ -38,20 +38,35 @@ const theme = createTheme();
 
 export default function Admin() {
   const [adminToken, setAdminToken] = useState([]);
+  const [adminData, setAdminData] = useState([]);
   const [fill, setFill] = useState(false);
+  const [once, setOnce] = useState(false);
   async function getToken () {
     const response =  await fetch('/get_A_D_M_I_NToken/?name=Alexie');
       console.log(response);
       const data =  await response.json();
       console.log(data[0].token);
-      if(!fill)
+      const responseAdmin =  await fetch('/getAdminData');
+      const dataAdmin =  await responseAdmin.json();
+      if(!fill) {
         setAdminToken(data)
+        setAdminData(dataAdmin);
+        console.log(dataAdmin);
         setFill(true)
+      }
   }
-    getToken();
-  if(fill){
-    console.log(adminToken);
+  if(!fill){
+    if(!once)
+      getToken()
+  }
+
   const queryParameters = new URLSearchParams(window.location.search);
+  console.log(once)
+  if(!once) {
+  if(fill){
+    
+    console.log(adminToken);
+    console.log("Hello")
   if(localStorage.getItem('login') == 'true'){
     Swal.fire({
       icon: 'success',
@@ -212,5 +227,8 @@ export default function Admin() {
       </Container>
     </ThemeProvider>
   );
+  setOnce(true);
+}
+
 }
 }

@@ -13,6 +13,8 @@ let categories = [];
 let products = [];
 let admin_token = [];
 
+let admin_data = [];
+
 
 const getCircularReplacer = () => {
   const seen = new WeakSet();
@@ -165,11 +167,23 @@ app.get("/getAllProducts", (req, res) => {
 
 
 // ------------------------------------------------------------------------------------------ADMIN-LOGIN (API)-----------------------------------------------------------------------------
-
+app.get("/getAdminData", (req, res) => {
+  if(admin_data.length == 0){
+    try {
+      const data = fs.readFileSync(path.join(__dirname, '/dbs/admin_data.json'), 'utf8');
+      console.log("Uploading backup DB");
+      admin_data = JSON.parse(data);
+      
+      res.send(JSON.stringify(admin_data, getCircularReplacer()));
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    console.log("DB is on server")
+    res.send(JSON.stringify(admin_data, getCircularReplacer()));
+  }
+});
 // ------------------------------------------------------------------------------------------ADMIN-LOGIN (API)-----------------------------------------------------------------------------
-
-
-
 // ------------------------------------------------------------------------------------------ADMIN-TOKEN (API)-----------------------------------------------------------------------------
 app.get("/edit_A_D_M_I_NToken", (req, res) => {
   let name = req.query.name;
