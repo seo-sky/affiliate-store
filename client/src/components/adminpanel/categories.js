@@ -27,8 +27,26 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function CustomLocaleTextGrid() {
 
   const [open, setOpen] = React.useState(false);
+  const [categories, setCategories] = React.useState([]);
+  const [fill, setFill] = React.useState(false);
   const [titleModalView, settitleModalView] = React.useState("");
   const [subcategoriesModalView, setSubcategoriesModalView] = React.useState([]);
+
+  async function getData(){
+    const response =  await fetch('/getAllCategories');
+    console.log(response);
+    const data =  await response.json();
+    console.log(data);
+
+    if(!fill){
+      setCategories(data);
+      setFill(true)
+    }
+  }
+
+if(!fill) {
+getData();
+}
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -97,7 +115,7 @@ export default function CustomLocaleTextGrid() {
             },
         },
       ],
-      "rows":[{"id":"charts","name":"Charts","subcategories":["Modifiedfdsfdfddddddddddd","Modified2","Modified","Modified2","Modified","Modified2","Modified","Modified2","Modified","Modified2","Modified","Modified2"]},{"id":"documentation","name":"Documentation","subcategories":[]},{"id":"tech","name":"Tech","subcategories":["Webcam"]}],
+      "rows":categories,
       "initialState":{
          "columns":{
             "columnVisibilityModel":{
