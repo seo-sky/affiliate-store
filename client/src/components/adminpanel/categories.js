@@ -2,6 +2,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -19,6 +20,25 @@ import Slide from '@mui/material/Slide';
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import {
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarExport,
+  GridToolbarDensitySelector,
+} from '@mui/x-data-grid';
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <Button startIcon={<AddIcon />} onClick={() => {console.log("ADD")}}>New</Button>
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector />
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -56,6 +76,7 @@ getData();
     setOpen(false);
   };
 
+  
 
   const data =
     {
@@ -125,7 +146,8 @@ getData();
       }
    }
   return (
-    <div style={{ height: '100%', width: '100%' }}>
+    <div style={{ height: '90%', width: '100%' }}>
+      <h3>- Categorii</h3>
       <DataGrid
         {...data}
         hideFooter
@@ -137,7 +159,7 @@ getData();
           toolbarDensityComfortable: 'Large',
         }}
         slots={{
-          toolbar: GridToolbar,
+          toolbar: CustomToolbar,
         }}
       />
 
@@ -172,12 +194,12 @@ getData();
               primary={"Subcategorii: "}
             />
                       </ListItem>
-            <Grid container spacing={2} style={{marginLeft: 5}}>
+            <Grid container spacing={2} style={{marginLeft: 5, width: "90%"}}>
 
           {subcategoriesModalView.map(item => {
             return(
               <Grid item xs={4}>
-                <Chip label={item} variant="outlined" onClick={() => {alert(item)}}/>
+                <Chip style={{width: "90%"}} label={item} variant="outlined" onClick={() => {alert(item)}}/>
               </Grid>
             )
             })}
