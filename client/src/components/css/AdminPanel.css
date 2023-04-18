@@ -24,3 +24,11 @@
     background-position: 200% center;
   }
 }
+
+#root{
+  height: 90% !important;
+}
+
+html, body {
+  height: 100% !important;
+}

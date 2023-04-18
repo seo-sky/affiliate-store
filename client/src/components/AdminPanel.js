@@ -98,7 +98,7 @@ function AdminPanel(){
     }
 
   return (
-    <div>
+    <div style={{height: '100%'}}>
 
 <ProSidebarProvider style={{}}>
     <Sidebar   defaultCollapsed={menuCollapse}  style={{position: 'fixed', top: 0, borderBottomRightRadius: '30px', borderTopRightRadius: '30px'}}
@@ -180,7 +180,7 @@ function AdminPanel(){
 
 
 
-<div className='transitionMain' onClick={()=>{setMenuCollapse(true)}} style={{paddingLeft: menuCollapse ? '100px' : '280px', paddingRight: '20px'}}>
+<div className='transitionMain' onClick={()=>{setMenuCollapse(true)}} style={{paddingLeft: menuCollapse ? '100px' : '280px', paddingRight: '20px', height: '100%'}}>
     <h3 className='animate-charcter'>Admin Panel</h3>
       {selectedCategory == 'stats' ? <Stats></Stats> : void(0)}
       {selectedCategory == 'categories' ? <Categories></Categories> : void(0)}
