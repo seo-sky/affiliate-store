@@ -77,9 +77,13 @@ export default function CustomLocaleTextGrid() {
     if(newCategoryName != "") {
       let subcategories = newCategorySub.split(',');
       let newSubcategories = [];
-      subcategories.map((item) => {
-        newSubcategories.push(item.trimStart().trimEnd());
-      });
+      if(subcategories.length == 1 && subcategories[0] == ""){
+
+      } else {
+        subcategories.map((item) => {
+          newSubcategories.push(item.trimStart().trimEnd());
+        });
+      } 
       let id = parseInt(categories.length) + 1;
       addCategory({
         "id":id,
