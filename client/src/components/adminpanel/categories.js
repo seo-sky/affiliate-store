@@ -7,7 +7,6 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useDemoData } from '@mui/x-data-grid-generator';
-import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import List from '@mui/material/List';
@@ -20,6 +19,13 @@ import Slide from '@mui/material/Slide';
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Swal from "sweetalert2";
 import {
   GridToolbarContainer,
   GridToolbarColumnsButton,
@@ -28,17 +34,7 @@ import {
   GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
 
-function CustomToolbar() {
-  return (
-    <GridToolbarContainer>
-      <Button startIcon={<AddIcon />} onClick={() => {console.log("ADD")}}>New</Button>
-      <GridToolbarColumnsButton />
-      <GridToolbarFilterButton />
-      <GridToolbarDensitySelector />
-      <GridToolbarExport />
-    </GridToolbarContainer>
-  );
-}
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -51,6 +47,92 @@ export default function CustomLocaleTextGrid() {
   const [fill, setFill] = React.useState(false);
   const [titleModalView, settitleModalView] = React.useState("");
   const [subcategoriesModalView, setSubcategoriesModalView] = React.useState([]);
+  const [openNew, setOpenNew] = React.useState(false);
+  const [newCategoryName, setnewCategoryName] = React.useState("");
+  const [newCategorySub, setnewCategorySub] = React.useState("");
+
+  async function addCategory(category) {
+    console.log(JSON.stringify(category));
+    fetch('/addCategory', {
+      method: 'POST',
+      body: JSON.stringify(category),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+      });
+    
+  }
+
+  const handleClickOpenNew = () => {
+    setOpenNew(true);
+  };
+
+  const handleCloseNew = () => {
+    setOpenNew(false);
+    setnewCategoryName("");
+    setnewCategorySub("");
+  };
+
+  const handleAddNew = () => {
+    if(newCategoryName != "") {
+      let subcategories = newCategorySub.split(',');
+      let newSubcategories = [];
+      subcategories.map((item) => {
+        newSubcategories.push(item.trimStart().trimEnd());
+      });
+      let id = parseInt(categories.length) + 1;
+      addCategory({
+        "id":id,
+        "name":newCategoryName,
+        "subcategories": newSubcategories
+      });
+      resyncCategories();
+      setOpenNew(false);
+      Swal.fire({
+        icon: 'success',
+        title: 'Succes',
+        text: 'Categoria a fost adaugata cu succes!',
+        footer: '<a href="https://seosky.ro">SeoSky</a>'
+      });
+    } else {
+      setOpenNew(false);
+      Swal.fire({
+        icon: 'error',
+        title: 'Eroare',
+        text: 'Va rugam introduceti numele categoriei!',
+        footer: '<a href="https://seosky.ro">SeoSky</a>'
+      }).then(() => setOpenNew(true));
+    }
+    
+  };
+
+
+  const handleDeleteCategory = (id) => {
+    console.log(id);
+    fetch('/deleteCategory?id='+parseInt(id))
+    .then(() => {
+      resyncCategories();
+    })
+    
+  }
+
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <Button startIcon={<AddIcon />} onClick={handleClickOpenNew}>New</Button>
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    );
+  }
+
+  async function resyncCategories(){
+    const response =  await fetch('/getAllCategories');
+    const data =  await response.json();
+    setCategories(data)
+  }
 
   async function getData(){
     const response =  await fetch('/getAllCategories');
@@ -116,7 +198,7 @@ getData();
           sortable: false,
           renderCell: ({ row }) => {
             return(
-            <IconButton variant="outlined" color="error" onClick={() => console.log("clicked -> ", row.name)}>
+            <IconButton variant="outlined" color="error" onClick={() => {handleDeleteCategory(row.id)}}>
               <DeleteIcon />
             </IconButton>
             )
@@ -207,6 +289,42 @@ getData();
 
 
         </List>
+      </Dialog>
+
+            {/* ADD NEW */}
+      <Dialog open={openNew} onClose={handleCloseNew}>
+        <DialogTitle>Adauga categorie noua</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Introdu numele categoriei si adauga numele subcategoriilor separate prin virgula. Iar daca nu exista, lasa loc liber.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Numele categoriei"
+            fullWidth
+            variant="standard"
+            value={newCategoryName}
+            onChange={(e) => setnewCategoryName(e.target.value)}
+          />
+          <br />
+          <br />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="subcategories"
+            label="Subcategorii (separate prin virgula)"
+            fullWidth
+            variant="standard"
+            value={newCategorySub}
+            onChange={(e) => setnewCategorySub(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={handleCloseNew}>Anuleaza</Button>
+          <Button variant="contained" onClick={handleAddNew}>Adauga</Button>
+        </DialogActions>
       </Dialog>
     </div>
   );

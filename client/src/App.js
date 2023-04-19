@@ -154,12 +154,13 @@ if(!fill) {
     <>
     <div style={{width: '100% !important', height: '100%', minHeight: '400px'}}>
       
-      <ProSidebarProvider style={{}}>
+      <ProSidebarProvider>
     <Sidebar   defaultCollapsed={menuCollapse}  style={{position: 'fixed', top: 0, borderBottomRightRadius: '30px', borderTopRightRadius: '30px'}}
     rootStyles={{
       background:
         'linear-gradient(180deg, rgba(178,235,249,1) 0%, rgba(89,117,124,1) 49%, rgba(255,255,255,1) 100%)',
-    }}>
+    }}
+    >
        <div style={{position: 'relative', width: '100%', textAlign: 'right'}} className="closemenu" onClick={menuIconClick}>
         <p className='collapse_button' style={{position: 'relative', display: 'inline', top:"10px", paddingRight:"5px"}}>
         {menuCollapse ? (
@@ -180,7 +181,6 @@ if(!fill) {
       
 
       {categories.map(categ => {
-      console.log(categ);
       if(categ.subcategories.length == 0){
         return(
           <MenuItem key={categ.id} onClick={()=>{window.location.href = "/?category="+categ.name+"&subcategory=none"}}>{categ.name}</MenuItem>
@@ -188,9 +188,10 @@ if(!fill) {
       } else {
         return (
         <SubMenu onOpenChange={(open) => {openSub(categ.subcategories)}} label={categ.name}>
-        {categ.subcategories.map(subcateg => (
+        {categ.subcategories.map(subcateg => {
+          return (
           <MenuItem onClick={()=>{window.location.href = "/?category="+categ.name+"&subcategory="+subcateg}}>{subcateg}</MenuItem>
-        ))}
+        )})}
         </SubMenu>
         )
       }

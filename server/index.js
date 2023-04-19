@@ -50,6 +50,16 @@ app.post('/addCategory', (req, res) => {
   res.send('record is added to the database');
 });
 
+app.post('/resyncCategories', (req, res) => {
+  try {
+    let resync = JSON.parse(req.body);
+    fs.writeFileSync(path.join(__dirname, '/dbs/categories.json'), JSON.stringify(resync, getCircularReplacer()));
+  } catch (err) {
+    console.error(err);
+  }
+  res.send('record is added to the database');
+});
+
 app.get("/getAllCategories", (req, res) => {
   if(categories.length == 0){
     try {
@@ -74,9 +84,15 @@ app.get("/deleteCategory", (req, res) => {
   console.log("reading DB");
   let data2 = JSON.parse(data);
   data2.splice((parseInt(id)-1), 1)
-  console.log(data2);
-  categories = data2;
-  fs.writeFileSync(path.join(__dirname, '/dbs/categories.json'), JSON.stringify(data2, getCircularReplacer()));
+  let i = 1;
+  let data3 = [];
+  data2.map((item) => {
+    data3.push({"id": i, "name": item.name, subcategories: item.subcategories});
+    i++;
+  });
+  console.log(data3);
+  categories = data3;
+  fs.writeFileSync(path.join(__dirname, '/dbs/categories.json'), JSON.stringify(data3, getCircularReplacer()));
   res.send('record deleted from the database');
 });
 
