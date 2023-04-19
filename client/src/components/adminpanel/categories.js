@@ -50,6 +50,8 @@ export default function CustomLocaleTextGrid() {
   const [openNew, setOpenNew] = React.useState(false);
   const [newCategoryName, setnewCategoryName] = React.useState("");
   const [newCategorySub, setnewCategorySub] = React.useState("");
+  const [titleSubCateg, settitleSubCateg] = React.useState("");
+  const [openSubCategDialog, setopenSubCategDialog] = React.useState(false);
 
   async function addCategory(category) {
     console.log(JSON.stringify(category));
@@ -191,6 +193,14 @@ getData();
     setOpen(false);
   };
 
+  const handleOpenSubCategDialog = () => {
+    setopenSubCategDialog(true);
+  };
+
+  const handleCloseSubCategDialog = () => {
+    setopenSubCategDialog(false);
+  };
+
   
 
   const data =
@@ -277,7 +287,20 @@ getData();
           toolbar: CustomToolbar,
         }}
       />
-
+<Dialog style={{zIndex: 999999}}
+        open={openSubCategDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleCloseSubCategDialog}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle style={{width: '280px'}}>{titleSubCateg}</DialogTitle>
+        <DialogContent>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSubCategDialog}>Ok</Button>
+        </DialogActions>
+      </Dialog>
 <Dialog
         fullScreen
         open={open}
@@ -314,7 +337,10 @@ getData();
           {subcategoriesModalView.map(item => {
             return(
               <Grid item xs={4}>
-                <Chip style={{width: "90%"}} label={item} variant="outlined" onClick={() => {alert(item)}}/>
+                <Chip style={{width: "90%"}} label={item} variant="outlined" onClick={() => {
+                  settitleSubCateg(item);
+                  handleOpenSubCategDialog();
+                }}/>
               </Grid>
             )
             })}
