@@ -109,10 +109,39 @@ export default function CustomLocaleTextGrid() {
 
   const handleDeleteCategory = (id) => {
     console.log(id);
-    fetch('/deleteCategory?id='+parseInt(id))
-    .then(() => {
-      resyncCategories();
+    const swalWithBootstrapButtons = Swal.mixin({
     })
+    
+    swalWithBootstrapButtons.fire({
+      title: 'Doriti stergerea?',
+      text: "Sunteti sigur ca doriti sa stergeti aceasta categorie?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sterge',
+      cancelButtonText: 'Anuleaza',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch('/deleteCategory?id='+parseInt(id))
+          .then(() => {
+            resyncCategories();
+          })
+        swalWithBootstrapButtons.fire(
+          'Sters!',
+          'Categoria a fost stearsa cu succes!',
+          'success'
+        )
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Anulat!',
+          'Categoria nu a mai fost stearsa.',
+          'error'
+        )
+      }
+    })
+    
     
   }
 
