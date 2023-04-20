@@ -31,7 +31,7 @@ import {
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
   GridToolbarExport,
-  GridToolbarDensitySelector,
+  GridToolbarDensitySelector
 } from '@mui/x-data-grid';
 
 
@@ -52,10 +52,27 @@ export default function CustomLocaleTextGrid() {
   const [newCategorySub, setnewCategorySub] = React.useState("");
   const [titleSubCateg, settitleSubCateg] = React.useState("");
   const [openSubCategDialog, setopenSubCategDialog] = React.useState(false);
+  const [openEditCategDialog, setopenEditCategDialog] = React.useState(false);
+
+  const [editCategoryName, seteditCategoryName] = React.useState("");
+  const [editCategorySub, seteditCategorySub] = React.useState("");
+  const [editCategoryId, seteditCategoryId] = React.useState(0);
 
   async function addCategory(category) {
     console.log(JSON.stringify(category));
     fetch('/addCategory', {
+      method: 'POST',
+      body: JSON.stringify(category),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+      });
+    
+  }
+
+  async function editCategory(category) {
+    console.log(JSON.stringify(category));
+    fetch('/editCategory', {
       method: 'POST',
       body: JSON.stringify(category),
       headers: {
@@ -73,6 +90,18 @@ export default function CustomLocaleTextGrid() {
     setOpenNew(false);
     setnewCategoryName("");
     setnewCategorySub("");
+  };
+
+  const handleCloseEdit = () => {
+    setopenEditCategDialog(false);
+    seteditCategoryName("");
+    seteditCategorySub("");
+  }
+  const handleClickOpenEdit = (name, subcategories, id) => {
+    seteditCategoryName(name);
+    seteditCategoryId(id);
+    seteditCategorySub(subcategories.toString());
+    setopenEditCategDialog(true);
   };
 
   const handleAddNew = () => {
@@ -108,6 +137,42 @@ export default function CustomLocaleTextGrid() {
         text: 'Va rugam introduceti numele categoriei!',
         footer: '<a href="https://seosky.ro">SeoSky</a>'
       }).then(() => setOpenNew(true));
+    }
+    
+  };
+
+  const handleAddEdited = () => {
+    if(editCategoryName != "") {
+      let subcategories = editCategorySub.split(',');
+      let newSubcategories = [];
+      if(subcategories.length == 1 && subcategories[0] == ""){
+
+      } else {
+        subcategories.map((item) => {
+          newSubcategories.push(item.trimStart().trimEnd());
+        });
+      } 
+      editCategory({
+        "id":editCategoryId,
+        "name":editCategoryName,
+        "subcategories": newSubcategories
+      });
+      resyncCategories();
+      setopenEditCategDialog(false);
+      Swal.fire({
+        icon: 'success',
+        title: 'Succes',
+        text: 'Categoria a fost editata cu succes!',
+        footer: '<a href="https://seosky.ro">SeoSky</a>'
+      });
+    } else {
+      setopenEditCategDialog(false);
+      Swal.fire({
+        icon: 'error',
+        title: 'Eroare',
+        text: 'Va rugam introduceti numele categoriei!',
+        footer: '<a href="https://seosky.ro">SeoSky</a>'
+      }).then(() => setopenEditCategDialog(true));
     }
     
   };
@@ -228,7 +293,7 @@ getData();
           "width":70,
           renderCell: ({ row }) => {
             return(
-              <IconButton variant="outlined" color="success" onClick={() => console.log("clicked -> ", row.name)}>
+              <IconButton variant="outlined" color="success" onClick={() => {handleClickOpenEdit(row.name, row.subcategories, row.id)}}>
               <EditIcon />
             </IconButton>
             )
@@ -383,6 +448,42 @@ getData();
         <DialogActions>
           <Button variant="outlined" onClick={handleCloseNew}>Anuleaza</Button>
           <Button variant="contained" onClick={handleAddNew}>Adauga</Button>
+        </DialogActions>
+      </Dialog>
+
+
+      <Dialog open={openEditCategDialog} onClose={handleCloseEdit}>
+        <DialogTitle>Editeaza categoria</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Editeaza numele categoriei si adauga/sterge/editeaza numele subcategoriilor separate prin virgula. Iar daca nu exista, lasa loc liber.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Numele categoriei"
+            fullWidth
+            variant="standard"
+            value={editCategoryName}
+            onChange={(e) => seteditCategoryName(e.target.value)}
+          />
+          <br />
+          <br />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="subcategories"
+            label="Subcategorii (separate prin virgula)"
+            fullWidth
+            variant="standard"
+            value={editCategorySub}
+            onChange={(e) => seteditCategorySub(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={handleCloseEdit}>Anuleaza</Button>
+          <Button variant="contained" onClick={() => {handleAddEdited()}}>Salveaza</Button>
         </DialogActions>
       </Dialog>
     </div>

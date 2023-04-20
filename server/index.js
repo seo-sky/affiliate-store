@@ -50,6 +50,26 @@ app.post('/addCategory', (req, res) => {
   res.send('record is added to the database');
 });
 
+
+app.post('/editCategory', (req, res) => {
+
+  const data = fs.readFileSync(path.join(__dirname, '/dbs/categories.json'), 'utf8');
+  console.log("reading DB");
+
+  let data2 = JSON.parse(data);
+  let category = req.body
+  console.log(category);
+  data2.map((item) => {
+    if(item.id == category.id){
+      item.name = category.name;
+      item.subcategories = category.subcategories;
+    }
+  })
+  categories = data2;
+  fs.writeFileSync(path.join(__dirname, '/dbs/categories.json'), JSON.stringify(data2, getCircularReplacer()));
+  res.send('record is added to the database');
+});
+
 app.post('/resyncCategories', (req, res) => {
   try {
     let resync = JSON.parse(req.body);
