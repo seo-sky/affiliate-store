@@ -40,6 +40,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+function containsDuplicates(array) {
+  if (array.length !== new Set(array).size) {
+    return true;
+  }
+
+  return false;
+}
+
 export default function CustomLocaleTextGrid() {
 
   const [open, setOpen] = React.useState(false);
@@ -122,22 +130,32 @@ export default function CustomLocaleTextGrid() {
         });
       }
       if(!reps) {
-        let id = parseInt(categories.length) + 1;
-        addCategory({
-          "id":id,
-          "name":newCategoryName,
-          "subcategories": newSubcategories
-        });
-        resyncCategories();
-        setOpenNew(false);
-        Swal.fire({
-          icon: 'success',
-          title: 'Succes',
-          text: 'Categoria a fost adaugata cu succes!',
-          footer: '<a href="https://seosky.ro">SeoSky</a>'
-        });
-        setnewCategoryName("");
-        setnewCategorySub("");
+        if(!containsDuplicates(newSubcategories)){
+          let id = parseInt(categories.length) + 1;
+          addCategory({
+            "id":id,
+            "name":newCategoryName,
+            "subcategories": newSubcategories
+          });
+          resyncCategories();
+          setOpenNew(false);
+          Swal.fire({
+            icon: 'success',
+            title: 'Succes',
+            text: 'Categoria a fost adaugata cu succes!',
+            footer: '<a href="https://seosky.ro">SeoSky</a>'
+          });
+          setnewCategoryName("");
+          setnewCategorySub("");
+        } else {
+          setOpenNew(false);
+          Swal.fire({
+            icon: 'error',
+            title: 'Eroare',
+            text: 'Numele subcategoriilor nu trebuie sa se repete!',
+            footer: '<a href="https://seosky.ro">SeoSky</a>'
+          }).then(() => setOpenNew(true));
+        }
       } else {
         setOpenNew(false);
         Swal.fire({
@@ -163,6 +181,12 @@ export default function CustomLocaleTextGrid() {
     if(editCategoryName != "") {
       let subcategories = editCategorySub.split(',');
       let newSubcategories = [];
+      let reps = false;
+      categories.map((category) => {
+        if(editCategoryName == category.name){
+          reps = true;
+        }
+      });
       if(subcategories.length == 1 && subcategories[0] == ""){
 
       } else {
@@ -170,19 +194,39 @@ export default function CustomLocaleTextGrid() {
           newSubcategories.push(item.trimStart().trimEnd());
         });
       } 
-      editCategory({
-        "id":editCategoryId,
-        "name":editCategoryName,
-        "subcategories": newSubcategories
-      });
-      resyncCategories();
-      setopenEditCategDialog(false);
-      Swal.fire({
-        icon: 'success',
-        title: 'Succes',
-        text: 'Categoria a fost editata cu succes!',
-        footer: '<a href="https://seosky.ro">SeoSky</a>'
-      });
+      if(!reps) {
+        if(!containsDuplicates(newSubcategories)){
+          editCategory({
+            "id":editCategoryId,
+            "name":editCategoryName,
+            "subcategories": newSubcategories
+          });
+          resyncCategories();
+          setopenEditCategDialog(false);
+          Swal.fire({
+            icon: 'success',
+            title: 'Succes',
+            text: 'Categoria a fost editata cu succes!',
+            footer: '<a href="https://seosky.ro">SeoSky</a>'
+          });
+        } else {
+          setopenEditCategDialog(false);
+          Swal.fire({
+            icon: 'error',
+            title: 'Eroare',
+            text: 'Numele subcategoriilor nu trebuie sa se repete!',
+            footer: '<a href="https://seosky.ro">SeoSky</a>'
+          }).then(() => setopenEditCategDialog(true));
+        }
+      } else {
+        setopenEditCategDialog(false);
+        Swal.fire({
+          icon: 'error',
+          title: 'Eroare',
+          text: 'Acest nume de categorie exista deja!',
+          footer: '<a href="https://seosky.ro">SeoSky</a>'
+        }).then(() => setopenEditCategDialog(true));
+      }
     } else {
       setopenEditCategDialog(false);
       Swal.fire({
