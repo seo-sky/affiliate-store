@@ -48,7 +48,7 @@ function containsDuplicates(array) {
   return false;
 }
 
-export default function CustomLocaleTextGrid() {
+export default function Categories() {
 
   const [open, setOpen] = React.useState(false);
   const [categories, setCategories] = React.useState([]);
