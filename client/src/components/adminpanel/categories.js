@@ -108,27 +108,45 @@ export default function CustomLocaleTextGrid() {
     if(newCategoryName != "") {
       let subcategories = newCategorySub.split(',');
       let newSubcategories = [];
+      let reps = false;
+      categories.map((category) => {
+        if(newCategoryName == category.name){
+          reps = true;
+        }
+      });
       if(subcategories.length == 1 && subcategories[0] == ""){
 
       } else {
         subcategories.map((item) => {
           newSubcategories.push(item.trimStart().trimEnd());
         });
-      } 
-      let id = parseInt(categories.length) + 1;
-      addCategory({
-        "id":id,
-        "name":newCategoryName,
-        "subcategories": newSubcategories
-      });
-      resyncCategories();
-      setOpenNew(false);
-      Swal.fire({
-        icon: 'success',
-        title: 'Succes',
-        text: 'Categoria a fost adaugata cu succes!',
-        footer: '<a href="https://seosky.ro">SeoSky</a>'
-      });
+      }
+      if(!reps) {
+        let id = parseInt(categories.length) + 1;
+        addCategory({
+          "id":id,
+          "name":newCategoryName,
+          "subcategories": newSubcategories
+        });
+        resyncCategories();
+        setOpenNew(false);
+        Swal.fire({
+          icon: 'success',
+          title: 'Succes',
+          text: 'Categoria a fost adaugata cu succes!',
+          footer: '<a href="https://seosky.ro">SeoSky</a>'
+        });
+        setnewCategoryName("");
+        setnewCategorySub("");
+      } else {
+        setOpenNew(false);
+        Swal.fire({
+          icon: 'error',
+          title: 'Eroare',
+          text: 'Acest nume de categorie exista deja!',
+          footer: '<a href="https://seosky.ro">SeoSky</a>'
+        }).then(() => setOpenNew(true));
+      }
     } else {
       setOpenNew(false);
       Swal.fire({
