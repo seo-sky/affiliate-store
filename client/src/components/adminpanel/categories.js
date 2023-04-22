@@ -75,6 +75,7 @@ export default function Categories() {
         'Content-type': 'application/json; charset=UTF-8',
       }
       });
+      
     
   }
 

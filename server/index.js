@@ -196,6 +196,41 @@ app.get("/getAllProducts", (req, res) => {
     res.send(JSON.stringify(products, getCircularReplacer()));
   }
 });
+
+
+app.post('/addProduct', (req, res) => {
+
+  const data = fs.readFileSync(path.join(__dirname, '/dbs/products.json'), 'utf8');
+  console.log("reading DB");
+
+  let data2 = JSON.parse(data);
+  console.log(data)
+  data2.push(req.body);
+  products = data2;
+  fs.writeFileSync(path.join(__dirname, '/dbs/products.json'), JSON.stringify(data2, getCircularReplacer()));
+  res.send('record is added to the database');
+});
+
+app.get("/deleteProduct", (req, res) => {
+  let id = req.query.id;
+  console.log(id)
+  const data = fs.readFileSync(path.join(__dirname, '/dbs/products.json'), 'utf8');
+  console.log("reading DB");
+  let data2 = JSON.parse(data);
+  data2.splice((parseInt(id)-1), 1)
+  let i = 1;
+  let data3 = [];
+  data2.map((item) => {
+    // Add all data available in products.json
+    data3.push({"id": i, "name": item.name, subcategories: item.subcategories});
+    i++;
+  });
+  console.log(data3);
+  product = data3;
+  fs.writeFileSync(path.join(__dirname, '/dbs/categories.json'), JSON.stringify(data3, getCircularReplacer()));
+  res.send('record deleted from the database');
+});
+
 // ------------------------------------------------------------------------------------------PRODUCTS (API)-----------------------------------------------------------------------------
 
 
