@@ -126,8 +126,6 @@ export default function Products() {
         'Content-type': 'application/json; charset=UTF-8',
       }
       });
-      
-    
   }
 
   async function editCategory(category) {
@@ -165,68 +163,14 @@ export default function Products() {
   };
 
   const handleAddNew = () => {
-    if(newProductName != "") {
-      let subcategories = newProductSub.split(',');
-      let newSubcategories = [];
-      let reps = false;
-      products.map((product) => {
-        if(newProductName == product.name){
-          reps = true;
-        }
-      });
-      if(subcategories.length == 1 && subcategories[0] == ""){
+    setOpenNew(false);
+    Swal.fire({
+      icon: 'success',
+      title: 'Succes',
+      text: 'Produsul a fost adaugat cu succes!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(setOpenNew(true));
 
-      } else {
-        subcategories.map((item) => {
-          newSubcategories.push(item.trimStart().trimEnd());
-        });
-      }
-      if(!reps) {
-        if(!containsDuplicates(newSubcategories)){
-          let id = parseInt(products.length) + 1;
-          addProduct({
-            "id":id,
-            "name":newProductName,
-            "subcategories": newSubcategories
-          });
-          resyncProducts();
-          setOpenNew(false);
-          Swal.fire({
-            icon: 'success',
-            title: 'Succes',
-            text: 'Produsul a fost adaugat cu succes!',
-            footer: '<a href="https://seosky.ro">SeoSky</a>'
-          });
-          setnewProductName("");
-          setnewProductSub("");
-        } else {
-          setOpenNew(false);
-          Swal.fire({
-            icon: 'error',
-            title: 'Eroare',
-            text: 'Numele subcategoriilor nu trebuie sa se repete!',
-            footer: '<a href="https://seosky.ro">SeoSky</a>'
-          }).then(() => setOpenNew(true));
-        }
-      } else {
-        setOpenNew(false);
-        Swal.fire({
-          icon: 'error',
-          title: 'Eroare',
-          text: 'Acest nume de categorie exista deja!',
-          footer: '<a href="https://seosky.ro">SeoSky</a>'
-        }).then(() => setOpenNew(true));
-      }
-    } else {
-      setOpenNew(false);
-      Swal.fire({
-        icon: 'error',
-        title: 'Eroare',
-        text: 'Va rugam introduceti numele categoriei!',
-        footer: '<a href="https://seosky.ro">SeoSky</a>'
-      }).then(() => setOpenNew(true));
-    }
-    
   };
 
   const handleAddEdited = () => {
