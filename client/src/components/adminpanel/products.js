@@ -27,6 +27,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import CurrencyInput from 'react-currency-input-field';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 import Swal from "sweetalert2";
 import {
@@ -59,6 +63,7 @@ export default function Products() {
   const [titleModalView, settitleModalView] = React.useState("");
   const [subcategoriesModalView, setSubcategoriesModalView] = React.useState([]);
   const [openNew, setOpenNew] = React.useState(false);
+  const [categories, setCategories] = React.useState([]);
   
   const [newProductName, setnewProductName] = React.useState("");
   const [newProductSub, setnewProductSub] = React.useState("");
@@ -69,6 +74,9 @@ export default function Products() {
   const [newProductSubcategory, setnewProductSubcategory] = React.useState("");
   const [newProductLink, setnewProductLink] = React.useState("");
   const [newProductPrice, setnewProductPrice] = React.useState("");
+  const [newCurrentCategory, setnewCurrentCategory] = React.useState(0);
+  const [newCurrentCategoryObj, setnewCurrentCategoryObj] = React.useState([])
+  const [newSubcategory, setnewSubcategory] = React.useState(0);
 
   const [titleSubCateg, settitleSubCateg] = React.useState("");
   const [openSubCategDialog, setopenSubCategDialog] = React.useState(false);
@@ -78,6 +86,12 @@ export default function Products() {
   const [editCategorySub, seteditCategorySub] = React.useState("");
   const [editCategoryId, seteditCategoryId] = React.useState(0);
 
+  const handleChangeCategory = (event) => {
+    setnewCurrentCategory(event.target.value);
+  };
+  const handleChangeSubcategory = (event) => {
+    setnewSubcategory(event.target.value);
+  }
 
   function viewModalProduct(prod){
     Swal.fire({
@@ -340,8 +354,13 @@ export default function Products() {
     const data =  await response.json();
     console.log(data);
 
+    const response2 =  await fetch('/getAllCategories');
+    console.log(response2);
+    const data2 =  await response2.json();
+    console.log(data2);
     if(!fill){
       setProducts(data);
+      setCategories(data2);
       setFill(true)
     }
   }
@@ -472,6 +491,7 @@ getData();
       }
    }
   return (
+    <>
     <div style={{ height: '90%', width: '100%' }}>
       <h3>- Produse</h3>
       <DataGrid
@@ -633,6 +653,55 @@ getData();
             value={newProductLink}
             onChange={(e) => setnewProductLink(e.target.value)}
           />
+          <br />
+          <br />
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={newCurrentCategory}
+            onChange={(event) => {handleChangeCategory(event);}}
+            label="Age"
+          >
+            <MenuItem disabled value={0}>
+            Categorie...
+            </MenuItem>
+           
+            {
+              categories.map((category) => {
+                console.log(category);
+                return(
+                <MenuItem onClick={()=>{setnewCurrentCategoryObj(category.subcategories);console.log(newCurrentCategoryObj)}} value={category.name}>{category.name}</MenuItem>
+                )
+              })
+            }
+            
+          </Select>
+          {
+            newCurrentCategoryObj.length !== 0 ?
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={newSubcategory}
+            onChange={handleChangeSubcategory}
+            label="Age"
+          >
+            <MenuItem disabled value={0}>
+            Subcategorie...
+            </MenuItem>
+            {
+              newCurrentCategoryObj.map((subcategories) => {
+                return(
+                <MenuItem value={subcategories}>{subcategories}</MenuItem>
+                )
+              })
+            }
+            
+          </Select>
+          :
+          newCurrentCategory !== 0 ?
+          <p style={{marginLeft: "10px", display: 'inline'}}>Nu exista subcategorie</p>
+          : ""
+          }
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={handleCloseNew}>Anuleaza</Button>
@@ -676,5 +745,6 @@ getData();
         </DialogActions>
       </Dialog>
     </div>
+    </>
   );
 }
