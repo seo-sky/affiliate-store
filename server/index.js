@@ -222,12 +222,25 @@ app.get("/deleteProduct", (req, res) => {
   let data3 = [];
   data2.map((item) => {
     // Add all data available in products.json
-    data3.push({"id": i, "name": item.name, subcategories: item.subcategories});
+    data3.push({
+      "id": i,
+          "date": item.date,
+          "clicks": item.clicks,
+          "name": item.name,
+          "subname": item.subname,
+          "price":  item.price,
+          "image": item.image,
+          "description": item.description,
+          "distribuitor": item.distribuitor,
+          "category": item.category,
+          "subcategory": item.subcategory,
+          "link": item.link
+    });
     i++;
   });
   console.log(data3);
-  product = data3;
-  fs.writeFileSync(path.join(__dirname, '/dbs/categories.json'), JSON.stringify(data3, getCircularReplacer()));
+  products = data3;
+  fs.writeFileSync(path.join(__dirname, '/dbs/products.json'), JSON.stringify(data3, getCircularReplacer()));
   res.send('record deleted from the database');
 });
 
