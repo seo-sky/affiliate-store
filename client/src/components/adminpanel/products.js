@@ -433,14 +433,14 @@ export default function Products() {
   };
 
 
-  const handleDeleteCategory = (id) => {
+  const handleDeleteProduct = (id) => {
     console.log(id);
     const swalWithBootstrapButtons = Swal.mixin({
     })
     
     swalWithBootstrapButtons.fire({
       title: 'Doriti stergerea?',
-      text: "Sunteti sigur ca doriti sa stergeti aceasta categorie?",
+      text: "Sunteti sigur ca doriti sa stergeti acest produs?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sterge',
@@ -448,13 +448,13 @@ export default function Products() {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch('/deleteCategory?id='+parseInt(id))
+        fetch('/deleteProduct?id='+parseInt(id))
           .then(() => {
             resyncProducts();
           })
         swalWithBootstrapButtons.fire(
           'Sters!',
-          'Categoria a fost stearsa cu succes!',
+          'Produsul a fost sters cu succes!',
           'success'
         )
       } else if (
@@ -462,8 +462,8 @@ export default function Products() {
       ) {
         swalWithBootstrapButtons.fire(
           'Anulat!',
-          'Categoria nu a mai fost stearsa.',
-          'error'
+          'Produsul nu a mai fost sters.',
+          'info'
         )
       }
     })
@@ -602,7 +602,7 @@ getData();
           sortable: false,
           renderCell: ({ row }) => {
             return(
-            <IconButton variant="outlined" color="error" onClick={() => {handleDeleteCategory(row.id)}}>
+            <IconButton variant="outlined" color="error" onClick={() => {handleDeleteProduct(row.id)}}>
               <DeleteIcon />
             </IconButton>
             )

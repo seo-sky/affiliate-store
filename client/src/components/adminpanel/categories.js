@@ -271,7 +271,7 @@ export default function Categories() {
         swalWithBootstrapButtons.fire(
           'Anulat!',
           'Categoria nu a mai fost stearsa.',
-          'error'
+          'info'
         )
       }
     })
