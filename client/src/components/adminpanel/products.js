@@ -105,7 +105,7 @@ export default function Products() {
       <h4>Clickuri: ${prod.clicks}</h4>
       <h3>Descriere: </h3>
       ${prod.description}
-      <br /><h4>Pret: ${prod.price}</h4>
+      <br /><h4>Pret: ${prod.price}$</h4>
       <h4>Categorie: ${prod.category}</h4>
       ${prod.subcategory !== false ? "<h4>Subcategorie: " + prod.subcategory + "</h4>" : ""}
       <h4>Link: <a href="${prod.link}" target="__blank">${prod.link}</a></h4>
@@ -273,7 +273,87 @@ export default function Products() {
           footer: '<a href="https://seosky.ro">SeoSky</a>'
         }).then(
           () => {setOpenNew(true)});
+      } else {
+        const date = new Date();
+        let currentDay= String(date.getDate()).padStart(2, '0');
+        let currentMonth = String(date.getMonth()+1).padStart(2,"0");
+        let currentYear = date.getFullYear();
+        // we will display the date as DD-MM-YYYY 
+        let currentDate = `${currentDay}.${currentMonth}.${currentYear}`;
+        addProduct({
+          "id": Number(products.length) + 1,
+          "date": currentDate,
+          "clicks": 0,
+          "name": newProductName,
+          "subname": newProductSub,
+          "price":  Number(newProductPrice),
+          "image": newProductImg,
+          "description": newProductDescription,
+          "distribuitor": newProductDistribution,
+          "category": newCurrentCategory,
+          "subcategory": newSubcategory === "" || newSubcategory === 0 ? false : newSubcategory,
+          "link": newProductLink
+        });
+        setOpenNew(false);
+        Swal.fire({
+          icon: 'success',
+          title: 'Succes!',
+          text: 'Produsul a fost adaugat cu succes!',
+          footer: '<a href="https://seosky.ro">SeoSky</a>'
+        }).then(
+          () => {
+            resyncProducts();
+            setnewProductName("");
+            setnewProductSub("");
+            setnewProductImg("");
+            setnewProductDescription("");
+            setnewProductPrice(undefined);
+            setnewProductLink("");
+            setnewCurrentCategory(0);
+            setnewSubcategory(0);
+            setnewCurrentCategoryObj([]);
+          });
       }
+    } else {
+      const date = new Date();
+        let currentDay= String(date.getDate()).padStart(2, '0');
+        let currentMonth = String(date.getMonth()+1).padStart(2,"0");
+        let currentYear = date.getFullYear();
+        // we will display the date as DD-MM-YYYY 
+        let currentDate = `${currentDay}.${currentMonth}.${currentYear}`;
+        addProduct({
+          "id": Number(products.length) + 1,
+          "date": currentDate,
+          "clicks": 0,
+          "name": newProductName,
+          "subname": newProductSub,
+          "price":  Number(newProductPrice),
+          "image": newProductImg,
+          "description": newProductDescription,
+          "distribuitor": newProductDistribution,
+          "category": newCurrentCategory,
+          "subcategory": newSubcategory === "" || newSubcategory === 0 ? false : newSubcategory,
+          "link": newProductLink
+        });
+        setOpenNew(false);
+        Swal.fire({
+          icon: 'success',
+          title: 'Succes!',
+          text: 'Produsul a fost adaugat cu succes!',
+          footer: '<a href="https://seosky.ro">SeoSky</a>'
+        }).then(
+          () => {
+            resyncProducts();
+            setnewProductName("");
+            setnewProductSub("");
+            setnewProductImg("");
+            setnewProductDescription("");
+            setnewProductPrice(undefined);
+            setnewProductLink("");
+            setnewCurrentCategory(0);
+            setnewSubcategory(0);
+            setnewCurrentCategoryObj([]);
+          });
     }
   }
 
