@@ -148,16 +148,16 @@ export default function Products() {
 
   const handleCloseNew = () => {
     setOpenNew(false);
-    setnewProductName("");
-    setnewProductSub("");
-    setnewProductImg("");
-    setnewProductDescription("");
-    setnewProductPrice(undefined);
-    setnewProductDistribution("");
-    setnewProductLink("");
-    setnewCurrentCategory(0);
-    setnewSubcategory(0);
-    setnewCurrentCategoryObj([]);
+    // setnewProductName("");
+    // setnewProductSub("");
+    // setnewProductImg("");
+    // setnewProductDescription("");
+    // setnewProductPrice(undefined);
+    // setnewProductDistribution("");
+    // setnewProductLink("");
+    // setnewCurrentCategory(0);
+    // setnewSubcategory(0);
+    // setnewCurrentCategoryObj([]);
   };
 
   const handleCloseEdit = () => {
