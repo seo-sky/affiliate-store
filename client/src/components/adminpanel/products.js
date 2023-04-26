@@ -88,6 +88,7 @@ export default function Products() {
 
   const handleChangeCategory = (event) => {
     setnewCurrentCategory(event.target.value);
+    setnewSubcategory(0);
   };
   const handleChangeSubcategory = (event) => {
     setnewSubcategory(event.target.value);
@@ -127,6 +128,7 @@ export default function Products() {
       }
       });
   }
+  console.log(newProductPrice)
 
   async function editCategory(category) {
     console.log(JSON.stringify(category));
@@ -148,6 +150,14 @@ export default function Products() {
     setOpenNew(false);
     setnewProductName("");
     setnewProductSub("");
+    setnewProductImg("");
+    setnewProductDescription("");
+    setnewProductPrice(undefined);
+    setnewProductDistribution("");
+    setnewProductLink("");
+    setnewCurrentCategory(0);
+    setnewSubcategory(0);
+    setnewCurrentCategoryObj([]);
   };
 
   const handleCloseEdit = () => {
@@ -163,13 +173,120 @@ export default function Products() {
   };
 
   const handleAddNew = () => {
+
+  if(newProductName === ""){
+
     setOpenNew(false);
     Swal.fire({
-      icon: 'success',
-      title: 'Succes',
-      text: 'Produsul a fost adaugat cu succes!',
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti numele produsului!',
       footer: '<a href="https://seosky.ro">SeoSky</a>'
-    }).then(setOpenNew(true));
+    }).then(
+      () => {setOpenNew(true)});
+
+  } else if(newProductSub === "") {
+
+    setOpenNew(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti mini descrierea!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setOpenNew(true)});
+
+  } else if(newProductImg === ""){
+
+    setOpenNew(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti linkul catre imaginea produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setOpenNew(true)});
+
+  } else if(newProductDescription === ""){
+
+    setOpenNew(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti descrierea produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setOpenNew(true)});
+
+  } else if(newProductPrice === "" || newProductPrice === undefined){
+
+    setOpenNew(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti pretul produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setOpenNew(true)});
+
+  } else if(newProductDistribution == "") {
+
+    setOpenNew(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti furnizorul produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setOpenNew(true)});
+
+  } else if(newProductLink === ""){
+
+    setOpenNew(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti linkul de afiliere al produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setOpenNew(true)});
+
+  } else if(newCurrentCategory === 0){
+
+    setOpenNew(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti categoria produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setOpenNew(true)});
+
+  } else if(newCurrentCategory !== 0){
+    if(newCurrentCategoryObj.length !== 0){
+      if(newSubcategory === "" || newSubcategory === 0){
+        setOpenNew(false);
+        Swal.fire({
+          icon: 'error',
+          title: 'Eroare',
+          text: 'Introduceti subcategoria produsului!',
+          footer: '<a href="https://seosky.ro">SeoSky</a>'
+        }).then(
+          () => {setOpenNew(true)});
+      }
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+    
 
   };
 
@@ -369,7 +486,7 @@ getData();
         },
         {
             "field":"distribuitor",
-            "headerName":"Distribuitor",
+            "headerName":"Furnizor",
             "width":180,
             "editable":false
         },
@@ -574,14 +691,15 @@ getData();
             placeholder="Pret..."
             decimalsLimit={2}
             prefix="$"
+            value={newProductPrice}
             className={`form-control`}
-            onValueChange={(value, name) => setnewProductPrice(value)}
+            onValueChange={(value, name) => {setnewProductPrice(value)}}
           />
           <br />
           <br />
           <TextField
             id="distribution"
-            label="Distribuitor..."
+            label="Numele furnizorului..."
             fullWidth
             variant="standard"
             value={newProductDistribution}
