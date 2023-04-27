@@ -244,6 +244,35 @@ app.get("/deleteProduct", (req, res) => {
   res.send('record deleted from the database');
 });
 
+
+app.post('/editProduct', (req, res) => {
+
+  const data = fs.readFileSync(path.join(__dirname, '/dbs/products.json'), 'utf8');
+  console.log("reading DB");
+
+  let data2 = JSON.parse(data);
+  let product = req.body
+  console.log(product);
+  data2.map((item) => {
+    if(item.id == product.id){
+        item.date = product.date;
+        item.clicks = product.clicks;
+        item.name = product.name;
+        item.subname = product.subname;
+        item.price = product.price;
+        item.image = product.image;
+        item.description = product.description;
+        item.distribuitor = product.distribuitor;
+        item.category = product.category;
+        item.subcategory = product.subcategory;
+        item.link = product.link;
+    }
+  })
+  products = data2;
+  fs.writeFileSync(path.join(__dirname, '/dbs/products.json'), JSON.stringify(data2, getCircularReplacer()));
+  res.send('record is added to the database');
+});
+
 // ------------------------------------------------------------------------------------------PRODUCTS (API)-----------------------------------------------------------------------------
 
 

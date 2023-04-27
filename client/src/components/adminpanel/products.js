@@ -94,6 +94,8 @@ export default function Products() {
   const [editCurrentCategory, seteditCurrentCategory] = React.useState(0);
   const [editCurrentCategoryObj, seteditCurrentCategoryObj] = React.useState([])
   const [editSubcategory, seteditSubcategory] = React.useState(0);
+  const [editClicks, seteditClicks] = React.useState(0);
+  const [editID, seteditID] = React.useState(0);
 
   const handleChangeCategory = (event) => {
     setnewCurrentCategory(event.target.value);
@@ -144,18 +146,16 @@ export default function Products() {
       }
       });
   }
-  console.log(newProductPrice)
 
-  async function editCategory(category) {
-    console.log(JSON.stringify(category));
-    fetch('/editCategory', {
+  async function editProduct(product) {
+    console.log(JSON.stringify(product));
+    fetch('/editProduct', {
       method: 'POST',
-      body: JSON.stringify(category),
+      body: JSON.stringify(product),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       }
       });
-    
   }
 
   const handleClickOpenNew = () => {
@@ -190,6 +190,8 @@ export default function Products() {
     seteditProductLink(prod_link)
     seteditProductPrice(prod_price)
     seteditCurrentCategory(prod_category)
+    seteditID(prod_id);
+    seteditClicks(prod_clicks);
 
     categories.map((category) => {
       console.log(category);
@@ -402,66 +404,191 @@ export default function Products() {
   };
 
   const handleAddEdited = () => {
-    if(editCategoryName != "") {
-      let subcategories = editCategorySub.split(',');
-      let newSubcategories = [];
-      let reps = false;
-      products.map((product) => {
-        if(editCategoryName == product.name){
-          reps = true;
-        }
-      });
-      if(subcategories.length == 1 && subcategories[0] == ""){
+  
+    if(editProductName === ""){
 
-      } else {
-        subcategories.map((item) => {
-          newSubcategories.push(item.trimStart().trimEnd());
-        });
-      } 
-      if(!reps) {
-        if(!containsDuplicates(newSubcategories)){
-          editCategory({
-            "id":editCategoryId,
-            "name":editCategoryName,
-            "subcategories": newSubcategories
-          });
-          resyncProducts();
-          setopenEditProductDialog(false);
-          Swal.fire({
-            icon: 'success',
-            title: 'Succes',
-            text: 'Categoria a fost editata cu succes!',
-            footer: '<a href="https://seosky.ro">SeoSky</a>'
-          });
-        } else {
-          setopenEditProductDialog(false);
-          Swal.fire({
-            icon: 'error',
-            title: 'Eroare',
-            text: 'Numele subcategoriilor nu trebuie sa se repete!',
-            footer: '<a href="https://seosky.ro">SeoSky</a>'
-          }).then(() => setopenEditProductDialog(true));
-        }
-      } else {
+    setopenEditProductDialog(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti numele produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setopenEditProductDialog(true)});
+
+  } else if(editProductSub === "") {
+
+    setopenEditProductDialog(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti mini descrierea!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setopenEditProductDialog(true)});
+
+  } else if(editProductImg === ""){
+
+    setopenEditProductDialog(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti linkul catre imaginea produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setopenEditProductDialog(true)});
+
+  } else if(editProductDescription === ""){
+
+    setopenEditProductDialog(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti descrierea produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setopenEditProductDialog(true)});
+
+  } else if(editProductPrice === "" || editProductPrice === undefined){
+
+    setopenEditProductDialog(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti pretul produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setopenEditProductDialog(true)});
+
+  } else if(editProductDistribution == "") {
+
+    setopenEditProductDialog(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti furnizorul produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setopenEditProductDialog(true)});
+
+  } else if(editProductLink === ""){
+
+    setopenEditProductDialog(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti linkul de afiliere al produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setopenEditProductDialog(true)});
+
+  } else if(editCurrentCategory === 0){
+
+    setopenEditProductDialog(false);
+    Swal.fire({
+      icon: 'error',
+      title: 'Eroare',
+      text: 'Introduceti categoria produsului!',
+      footer: '<a href="https://seosky.ro">SeoSky</a>'
+    }).then(
+      () => {setopenEditProductDialog(true)});
+
+  } else if(editCurrentCategory !== 0){
+    if(editCurrentCategoryObj.length !== 0){
+      if(editSubcategory === "" || editSubcategory === 0){
         setopenEditProductDialog(false);
         Swal.fire({
           icon: 'error',
           title: 'Eroare',
-          text: 'Acest nume de categorie exista deja!',
+          text: 'Introduceti subcategoria produsului!',
           footer: '<a href="https://seosky.ro">SeoSky</a>'
-        }).then(() => setopenEditProductDialog(true));
+        }).then(
+          () => {setopenEditProductDialog(true)});
+      } else {
+        const date = new Date();
+        let currentDay= String(date.getDate()).padStart(2, '0');
+        let currentMonth = String(date.getMonth()+1).padStart(2,"0");
+        let currentYear = date.getFullYear();
+        // we will display the date as DD-MM-YYYY 
+        let currentDate = `${currentDay}.${currentMonth}.${currentYear}`;
+        editProduct({
+          "id": Number(editID),
+          "date": currentDate,
+          "clicks": Number(editClicks),
+          "name": editProductName,
+          "subname": editProductSub,
+          "price":  Number(editProductPrice),
+          "image": editProductImg,
+          "description": editProductDescription,
+          "distribuitor": editProductDistribution,
+          "category": editCurrentCategory,
+          "subcategory": editSubcategory === "" || editSubcategory === 0 ? false : editSubcategory,
+          "link": editProductLink
+        });
+        setopenEditProductDialog(false);
+        Swal.fire({
+          icon: 'success',
+          title: 'Succes!',
+          text: 'Produsul a fost editat cu succes!',
+          footer: '<a href="https://seosky.ro">SeoSky</a>'
+        }).then(
+          () => {
+            resyncProducts();
+            seteditProductName("");
+            seteditProductSub("");
+            seteditProductImg("");
+            seteditProductDescription("");
+            seteditProductPrice(undefined);
+            seteditProductLink("");
+            seteditCurrentCategory(0);
+            seteditSubcategory(0);
+            seteditCurrentCategoryObj([]);
+          });
       }
     } else {
-      setopenEditProductDialog(false);
-      Swal.fire({
-        icon: 'error',
-        title: 'Eroare',
-        text: 'Va rugam introduceti numele categoriei!',
-        footer: '<a href="https://seosky.ro">SeoSky</a>'
-      }).then(() => setopenEditProductDialog(true));
+      const date = new Date();
+        let currentDay= String(date.getDate()).padStart(2, '0');
+        let currentMonth = String(date.getMonth()+1).padStart(2,"0");
+        let currentYear = date.getFullYear();
+        // we will display the date as DD-MM-YYYY 
+        let currentDate = `${currentDay}.${currentMonth}.${currentYear}`;
+        editProduct({
+          "id": Number(editID),
+          "date": currentDate,
+          "clicks": Number(editClicks),
+          "name": editProductName,
+          "subname": editProductSub,
+          "price":  Number(editProductPrice),
+          "image": editProductImg,
+          "description": editProductDescription,
+          "distribuitor": editProductDistribution,
+          "category": editCurrentCategory,
+          "subcategory": editSubcategory === "" || editSubcategory === 0 ? false : editSubcategory,
+          "link": editProductLink
+        });
+        setopenEditProductDialog(false);
+        Swal.fire({
+          icon: 'success',
+          title: 'Succes!',
+          text: 'Produsul a fost editat cu succes!',
+          footer: '<a href="https://seosky.ro">SeoSky</a>'
+        }).then(
+          () => {
+            resyncProducts();
+            seteditProductName("");
+            seteditProductSub("");
+            seteditProductImg("");
+            seteditProductDescription("");
+            seteditProductPrice(undefined);
+            seteditProductLink("");
+            seteditCurrentCategory(0);
+            seteditSubcategory(0);
+            seteditCurrentCategoryObj([]);
+          });
     }
     
   };
+}
 
 
   const handleDeleteProduct = (id) => {
@@ -1030,7 +1157,7 @@ getData();
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={handleCloseEdit}>Anuleaza</Button>
-          <Button variant="contained" onClick={handleAddNew}>Adauga</Button>
+          <Button variant="contained" onClick={handleAddEdited}>Salveaza</Button>
         </DialogActions>
       </Dialog>
     </div>
