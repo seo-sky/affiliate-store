@@ -70,8 +70,6 @@ export default function Products() {
   const [newProductImg, setnewProductImg] = React.useState("");
   const [newProductDescription, setnewProductDescription] = React.useState("");
   const [newProductDistribution, setnewProductDistribution] = React.useState("Amazon.com");
-  const [newProductCategory, setnewProductCategory] = React.useState("");
-  const [newProductSubcategory, setnewProductSubcategory] = React.useState("");
   const [newProductLink, setnewProductLink] = React.useState("");
   const [newProductPrice, setnewProductPrice] = React.useState("");
   const [newCurrentCategory, setnewCurrentCategory] = React.useState(0);
@@ -80,19 +78,37 @@ export default function Products() {
 
   const [titleSubCateg, settitleSubCateg] = React.useState("");
   const [openSubCategDialog, setopenSubCategDialog] = React.useState(false);
-  const [openEditCategDialog, setopenEditCategDialog] = React.useState(false);
+  const [openEditProductDialog, setopenEditProductDialog] = React.useState(false);
 
   const [editCategoryName, seteditCategoryName] = React.useState("");
   const [editCategorySub, seteditCategorySub] = React.useState("");
   const [editCategoryId, seteditCategoryId] = React.useState(0);
 
+  const [editProductName, seteditProductName] = React.useState("");
+  const [editProductSub, seteditProductSub] = React.useState("");
+  const [editProductImg, seteditProductImg] = React.useState("");
+  const [editProductDescription, seteditProductDescription] = React.useState("");
+  const [editProductDistribution, seteditProductDistribution] = React.useState("Amazon.com");
+  const [editProductLink, seteditProductLink] = React.useState("");
+  const [editProductPrice, seteditProductPrice] = React.useState("");
+  const [editCurrentCategory, seteditCurrentCategory] = React.useState(0);
+  const [editCurrentCategoryObj, seteditCurrentCategoryObj] = React.useState([])
+  const [editSubcategory, seteditSubcategory] = React.useState(0);
+
   const handleChangeCategory = (event) => {
     setnewCurrentCategory(event.target.value);
     setnewSubcategory(0);
   };
+  const handleChangeEditedCategory = (event) => {
+    seteditCurrentCategory(event.target.value);
+    seteditSubcategory(0);
+  };
   const handleChangeSubcategory = (event) => {
     setnewSubcategory(event.target.value);
-  }
+  };
+  const handleChangeEditedSubcategory = (event) => {
+    seteditSubcategory(event.target.value);
+  };
 
   function viewModalProduct(prod){
     Swal.fire({
@@ -161,15 +177,30 @@ export default function Products() {
   };
 
   const handleCloseEdit = () => {
-    setopenEditCategDialog(false);
-    seteditCategoryName("");
-    seteditCategorySub("");
+    setopenEditProductDialog(false);
+    // seteditCategoryName("");
+    // seteditCategorySub("");
   }
-  const handleClickOpenEdit = (name, subcategories, id) => {
-    seteditCategoryName(name);
-    seteditCategoryId(id);
-    seteditCategorySub(subcategories.toString());
-    setopenEditCategDialog(true);
+  const handleClickOpenEdit = (prod_id,prod_date,prod_clicks,prod_name,prod_subname,prod_price,prod_image,prod_description,prod_distribuitor,prod_category,prod_subcategory,prod_link) => {
+    seteditProductName(prod_name);
+    seteditProductSub(prod_subname);
+    seteditProductImg(prod_image)
+    seteditProductDescription(prod_description)
+    seteditProductDistribution(prod_distribuitor)
+    seteditProductLink(prod_link)
+    seteditProductPrice(prod_price)
+    seteditCurrentCategory(prod_category)
+
+    categories.map((category) => {
+      console.log(category);
+      if(category.name === prod_category)  {
+        seteditCurrentCategoryObj(category.subcategories);
+        console.log(category.subcategories);
+        seteditSubcategory(prod_subcategory);
+      }
+    })
+
+    setopenEditProductDialog(true);
   };
 
   const handleAddNew = () => {
@@ -395,7 +426,7 @@ export default function Products() {
             "subcategories": newSubcategories
           });
           resyncProducts();
-          setopenEditCategDialog(false);
+          setopenEditProductDialog(false);
           Swal.fire({
             icon: 'success',
             title: 'Succes',
@@ -403,31 +434,31 @@ export default function Products() {
             footer: '<a href="https://seosky.ro">SeoSky</a>'
           });
         } else {
-          setopenEditCategDialog(false);
+          setopenEditProductDialog(false);
           Swal.fire({
             icon: 'error',
             title: 'Eroare',
             text: 'Numele subcategoriilor nu trebuie sa se repete!',
             footer: '<a href="https://seosky.ro">SeoSky</a>'
-          }).then(() => setopenEditCategDialog(true));
+          }).then(() => setopenEditProductDialog(true));
         }
       } else {
-        setopenEditCategDialog(false);
+        setopenEditProductDialog(false);
         Swal.fire({
           icon: 'error',
           title: 'Eroare',
           text: 'Acest nume de categorie exista deja!',
           footer: '<a href="https://seosky.ro">SeoSky</a>'
-        }).then(() => setopenEditCategDialog(true));
+        }).then(() => setopenEditProductDialog(true));
       }
     } else {
-      setopenEditCategDialog(false);
+      setopenEditProductDialog(false);
       Swal.fire({
         icon: 'error',
         title: 'Eroare',
         text: 'Va rugam introduceti numele categoriei!',
         footer: '<a href="https://seosky.ro">SeoSky</a>'
-      }).then(() => setopenEditCategDialog(true));
+      }).then(() => setopenEditProductDialog(true));
     }
     
   };
@@ -589,7 +620,20 @@ getData();
           "width":70,
           renderCell: ({ row }) => {
             return(
-              <IconButton variant="outlined" color="success" onClick={() => {handleClickOpenEdit(row.name, row.subcategories, row.id)}}>
+              <IconButton variant="outlined" color="success" onClick={() => {handleClickOpenEdit(
+                row.id,
+                row.date,
+                row.clicks,
+                row.name,
+                row.subname,
+                row.price,
+                row.image,
+                row.description,
+                row.distribuitor,
+                row.category,
+                row.subcategory,
+                row.link
+              )}}>
               <EditIcon />
             </IconButton>
             )
@@ -852,38 +896,141 @@ getData();
       </Dialog>
 
 
-      <Dialog open={openEditCategDialog} onClose={handleCloseEdit}>
-        <DialogTitle>Editeaza categoria</DialogTitle>
+      <Dialog open={openEditProductDialog} onClose={handleCloseEdit}>
+      <DialogTitle>Editeaza produsul</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Editeaza numele categoriei si adauga/sterge/editeaza numele subcategoriilor separate prin virgula. Iar daca nu exista, lasa loc liber.
+            Editeaza numele produsului si linkul catre imagine si toate celelalte campuri. Toate campurile trebuie completate.
           </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Numele categoriei"
+            label="Numele produsului..."
             fullWidth
             variant="standard"
-            value={editCategoryName}
-            onChange={(e) => seteditCategoryName(e.target.value)}
+            value={editProductName}
+            onChange={(e) => seteditProductName(e.target.value)}
           />
-          <br />
           <br />
           <TextField
             autoFocus
             margin="dense"
-            id="subcategories"
-            label="Subcategorii (separate prin virgula)"
+            id="subtitlu"
+            label="Mini descriere..."
             fullWidth
             variant="standard"
-            value={editCategorySub}
-            onChange={(e) => seteditCategorySub(e.target.value)}
+            value={editProductSub}
+            onChange={(e) => seteditProductSub(e.target.value)}
           />
+          <br />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="link_imagine"
+            label="Link imagine..."
+            fullWidth
+            variant="standard"
+            value={editProductImg}
+            onChange={(e) => seteditProductImg(e.target.value)}
+          />
+          <br />
+          <br />
+          <TextField
+            id="description"
+            label="Descriere..."
+            fullWidth
+            multiline
+            rows={4}
+            variant="standard"
+            value={editProductDescription}
+            onChange={(e) => seteditProductDescription(e.target.value)}
+          />
+          <br />
+          <CurrencyInput
+            id="input-example"
+            name="input-name"
+            style={{width: "100%", height: "50px", fontSize: "16px", marginTop: "10px", borderRadius: "8px", outline: "none", borderWidth: "0.1px", padding: '4px'}}
+            placeholder="Pret..."
+            decimalsLimit={2}
+            prefix="$"
+            value={editProductPrice}
+            className={`form-control`}
+            onValueChange={(value, name) => {seteditProductPrice(value)}}
+          />
+          <br />
+          <br />
+          <TextField
+            id="distribution"
+            label="Numele furnizorului..."
+            fullWidth
+            variant="standard"
+            value={editProductDistribution}
+            onChange={(e) => seteditProductDistribution(e.target.value)}
+          />
+          <br />
+          <br />
+          <TextField
+            id="linkafiliere"
+            label="Linkul de afiliere..."
+            fullWidth
+            variant="standard"
+            value={editProductLink}
+            onChange={(e) => seteditProductLink(e.target.value)}
+          />
+          <br />
+          <br />
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={editCurrentCategory}
+            onChange={(event) => {handleChangeEditedCategory(event);}}
+            label="Age"
+          >
+            <MenuItem disabled value={0}>
+            Categorie...
+            </MenuItem>
+           
+            {
+              categories.map((category) => {
+                console.log(category);
+                return(
+                <MenuItem onClick={()=>{seteditCurrentCategoryObj(category.subcategories);console.log(editCurrentCategoryObj)}} value={category.name}>{category.name}</MenuItem>
+                )
+              })
+            }
+            
+          </Select>
+          {
+            editCurrentCategoryObj.length !== 0 ?
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={editSubcategory}
+            onChange={handleChangeEditedSubcategory}
+            label="Age"
+          >
+            <MenuItem disabled value={0}>
+            Subcategorie...
+            </MenuItem>
+            {
+              editCurrentCategoryObj.map((subcategories) => {
+                return(
+                <MenuItem value={subcategories}>{subcategories}</MenuItem>
+                )
+              })
+            }
+            
+          </Select>
+          :
+          editCurrentCategory !== 0 ?
+          <p style={{marginLeft: "10px", display: 'inline'}}>Nu exista subcategorie</p>
+          : ""
+          }
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={handleCloseEdit}>Anuleaza</Button>
-          <Button variant="contained" onClick={() => {handleAddEdited()}}>Salveaza</Button>
+          <Button variant="contained" onClick={handleAddNew}>Adauga</Button>
         </DialogActions>
       </Dialog>
     </div>
