@@ -413,6 +413,12 @@ app.get("/getAdminLog", (req, res) => {
     res.send(JSON.stringify(admin_log, getCircularReplacer()));
   }
 });
+
+app.get('/deleteAllAdminLog', (req, res) => {
+  admin_log = [];
+  fs.writeFileSync(path.join(__dirname, '/dbs/admin_log.json'), JSON.stringify([]));
+  res.send('record is added to the database');
+});
 // ------------------------------------------------------------------------------------------ADMIN-TOKEN (API)-----------------------------------------------------------------------------
 
 

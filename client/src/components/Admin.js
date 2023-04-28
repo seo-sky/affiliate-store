@@ -71,11 +71,11 @@ export default function Admin() {
   useEffect(() => {
     //passing getData method to the lifecycle method
     getData();
+    if(!fill){
+      if(!once)
+        getToken()
+    }
   }, []);
-  if(!fill){
-    if(!once)
-      getToken()
-  }
 
   async function addLog(log) {
     console.log(JSON.stringify(log));
@@ -95,14 +95,16 @@ export default function Admin() {
     
     console.log(adminToken);
     console.log("Hello")
+    let op = true;
   if(localStorage.getItem('login') == 'true'){
+          if(op){
     Swal.fire({
       icon: 'success',
       showConfirmButton: false,
       timer: 2500,
       title: 'Succes!',
       text: 'Autentificare...',
-      timer: 1500,
+
       footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
     }).then(() => {
       const date = new Date();
@@ -124,7 +126,11 @@ export default function Admin() {
       });
       window.location.href = '/adminpanel'
     });
+    op = true;
+  }
   } else if(sessionStorage.getItem('currentlog') == 'true'){
+    let op = true;
+          if(op){
     Swal.fire({
       icon: 'success',
       showConfirmButton: false,
@@ -153,7 +159,11 @@ export default function Admin() {
       });
       window.location.href = '/adminpanel';
     });
+    op = false;
+  }
   } else if(queryParameters.get('token_login') == adminToken[0].token){
+    let op = true;
+          if(op){
     Swal.fire({
       icon: 'success',
       showConfirmButton: false,
@@ -183,6 +193,8 @@ export default function Admin() {
       })
       window.location.href = '/adminpanel';
     });
+    op = false;
+  }
   }
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -214,6 +226,8 @@ export default function Admin() {
           if(data.get("remember") == "remember"){
             localStorage.setItem('login', true);
           }
+          let op = true;
+          if(op){
           Swal.fire({
             icon: 'success',
             showConfirmButton: false,
@@ -243,6 +257,8 @@ export default function Admin() {
       sessionStorage.setItem("currentlog", true);
             window.location.href = '/adminpanel';
           });
+          op = false;
+        }
         } else if (data.get("email") !== account.email && data.get("password") !== account.password) {
           Swal.fire({
             icon: 'error',
@@ -340,6 +356,5 @@ export default function Admin() {
   );
   setOnce(true);
 }
-
 }
 }

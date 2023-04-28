@@ -25,6 +25,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import Swal from "sweetalert2";
 import {
   GridToolbarContainer,
@@ -100,6 +101,42 @@ export default function AdminLog() {
     setnewCategoryName("");
     setnewCategorySub("");
   };
+
+  const handleDeleteAll = () => {
+    const swalWithBootstrapButtons = Swal.mixin({
+    })
+    
+    swalWithBootstrapButtons.fire({
+      title: 'Doriti stergerea?',
+      text: "Sunteti sigur ca doriti sa stergeti toate inregistrarile?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sterge',
+      cancelButtonText: 'Anuleaza',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch('/deleteAllAdminLog')
+          .then(() => {
+            resyncCategories();
+          });
+        console.log("deleted")
+        swalWithBootstrapButtons.fire(
+          'Sters!',
+          'Toate inregistrarile au fost sterse!',
+          'success'
+        );
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Anulat!',
+          'Stergerea tuturor inregistrarilor a fost anulata.',
+          'info'
+        )
+      }
+    })
+  }
 
   const handleCloseEdit = () => {
     setopenEditCategDialog(false);
@@ -286,12 +323,13 @@ export default function AdminLog() {
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
         <GridToolbarExport />
+        <Button color="error" startIcon={<DeleteSweepIcon />} onClick={handleDeleteAll}>Sterge tot</Button>
       </GridToolbarContainer>
     );
   }
 
   async function resyncCategories(){
-    const response =  await fetch('/getAllCategories');
+    const response =  await fetch('/getAdminLog');
     const data =  await response.json();
     setCategories(data)
   }
