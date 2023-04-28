@@ -15,6 +15,8 @@ let admin_token = [];
 
 let admin_data = [];
 
+let admin_log = [];
+
 
 const getCircularReplacer = () => {
   const seen = new WeakSet();
@@ -296,6 +298,39 @@ app.get("/getAdminData", (req, res) => {
     res.send(JSON.stringify(admin_data, getCircularReplacer()));
   }
 });
+
+app.get("/deleteAdminUser", (req, res) => {
+  let id = req.query.id;
+  console.log(id)
+  const data = fs.readFileSync(path.join(__dirname, '/dbs/admin_data.json'), 'utf8');
+  console.log("reading DB");
+  let data2 = JSON.parse(data);
+  data2.splice((parseInt(id)-1), 1)
+  let i = 1;
+  let data3 = [];
+  data2.map((item) => {
+    data3.push({"id": i, "email": item.email, "password": item.password});
+    i++;
+  });
+  console.log(data3);
+  admin_data = data3;
+  fs.writeFileSync(path.join(__dirname, '/dbs/admin_data.json'), JSON.stringify(data3, getCircularReplacer()));
+  res.send('record deleted from the database');
+});
+
+app.post('/addAdminUser', (req, res) => {
+
+  const data = fs.readFileSync(path.join(__dirname, '/dbs/admin_data.json'), 'utf8');
+  console.log("reading DB");
+
+  let data2 = JSON.parse(data);
+  console.log(data)
+  data2.push(req.body);
+  admin_data = data2;
+  fs.writeFileSync(path.join(__dirname, '/dbs/admin_data.json'), JSON.stringify(data2, getCircularReplacer()));
+  res.send('record is added to the database');
+});
+
 // ------------------------------------------------------------------------------------------ADMIN-LOGIN (API)-----------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------ADMIN-TOKEN (API)-----------------------------------------------------------------------------
 app.get("/edit_A_D_M_I_NToken", (req, res) => {
@@ -326,6 +361,36 @@ app.get("/get_A_D_M_I_NToken", (req, res) => {
       console.log("DB is on server")
       res.send(JSON.stringify(admin_token, getCircularReplacer()));
     }
+  }
+});
+
+app.post('/addAdminLog', (req, res) => {
+
+  const data = fs.readFileSync(path.join(__dirname, '/dbs/admin_log.json'), 'utf8');
+  console.log("reading DB");
+
+  let data2 = JSON.parse(data);
+  console.log(data)
+  data2.push(req.body);
+  admin_log = data2;
+  fs.writeFileSync(path.join(__dirname, '/dbs/admin_log.json'), JSON.stringify(data2, getCircularReplacer()));
+  res.send('record is added to the database');
+});
+
+app.get("/getAdminLog", (req, res) => {
+  if(admin_log.length == 0){
+    try {
+      const data = fs.readFileSync(path.join(__dirname, '/dbs/admin_log.json'), 'utf8');
+      console.log("Uploading backup DB");
+      admin_log = JSON.parse(data);
+      
+      res.send(JSON.stringify(admin_log, getCircularReplacer()));
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    console.log("DB is on server")
+    res.send(JSON.stringify(admin_log, getCircularReplacer()));
   }
 });
 // ------------------------------------------------------------------------------------------ADMIN-TOKEN (API)-----------------------------------------------------------------------------
