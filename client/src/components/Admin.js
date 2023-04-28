@@ -90,7 +90,10 @@ export default function Admin() {
       text: 'Autentificare...',
       timer: 1500,
       footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
-    }).then(() => {window.location.href = '/adminpanel?token_login='+adminToken[0].token});
+    }).then(() => {
+      sessionStorage.setItem('currentlog', true)
+      window.location.href = '/adminpanel';
+    });
   }
   const handleSubmit = (event) => {
     event.preventDefault();

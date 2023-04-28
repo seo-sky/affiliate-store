@@ -163,12 +163,14 @@ export default function Products() {
   };
 
   const handleCloseNew = () => {
+    // Open modal for add product new
     setOpenNew(false);
     // setnewProductName("");
     // setnewProductSub("");
     // setnewProductImg("");
     // setnewProductDescription("");
     // setnewProductPrice(undefined);
+
     // setnewProductDistribution("");
     // setnewProductLink("");
     // setnewCurrentCategory(0);
