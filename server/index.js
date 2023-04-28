@@ -318,6 +318,25 @@ app.get("/deleteAdminUser", (req, res) => {
   res.send('record deleted from the database');
 });
 
+app.post('/editAdminUser', (req, res) => {
+
+  const data = fs.readFileSync(path.join(__dirname, '/dbs/admin_data.json'), 'utf8');
+  console.log("reading DB");
+
+  let data2 = JSON.parse(data);
+  let category = req.body
+  console.log(category);
+  data2.map((item) => {
+    if(item.id == category.id){
+      item.email = category.email;
+      item.password = category.password;
+    }
+  })
+  admin_data = data2;
+  fs.writeFileSync(path.join(__dirname, '/dbs/admin_data.json'), JSON.stringify(data2, getCircularReplacer()));
+  res.send('record is added to the database');
+});
+
 app.post('/addAdminUser', (req, res) => {
 
   const data = fs.readFileSync(path.join(__dirname, '/dbs/admin_data.json'), 'utf8');

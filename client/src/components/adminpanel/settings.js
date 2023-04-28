@@ -81,7 +81,7 @@ export default function Settings() {
 
   async function editCategory(category) {
     console.log(JSON.stringify(category));
-    fetch('/editCategory', {
+    fetch('/editAdminUser', {
       method: 'POST',
       body: JSON.stringify(category),
       headers: {
@@ -109,11 +109,12 @@ export default function Settings() {
   const handleClickOpenEdit = (name, subcategories, id) => {
     seteditCategoryName(name);
     seteditCategoryId(id);
-    seteditCategorySub(subcategories.toString());
+    seteditCategorySub(subcategories);
     setopenEditCategDialog(true);
   };
 
   const [isused, setisused] = React.useState(false);
+  const [isused2, setisused2] = React.useState(false);
   const handleAddNew = () => {
     if(newCategoryName === "") {
     setOpenNew(false);
@@ -163,63 +164,51 @@ export default function Settings() {
 }
 
   const handleAddEdited = () => {
-    if(editCategoryName != "") {
-      let subcategories = editCategorySub.split(',');
-      let newSubcategories = [];
-      let reps = false;
-      categories.map((category) => {
-        if(editCategoryName == category.name){
-          reps = true;
-        }
-      });
-      if(subcategories.length == 1 && subcategories[0] == ""){
-
-      } else {
-        subcategories.map((item) => {
-          newSubcategories.push(item.trimStart().trimEnd());
-        });
-      } 
-      if(!reps) {
-        if(!containsDuplicates(newSubcategories)){
-          editCategory({
-            "id":editCategoryId,
-            "name":editCategoryName,
-            "subcategories": newSubcategories
-          });
-          resyncCategories();
-          setopenEditCategDialog(false);
-          Swal.fire({
-            icon: 'success',
-            title: 'Succes',
-            text: 'Categoria a fost editata cu succes!',
-            footer: '<a href="https://seosky.ro">SeoSky</a>'
-          });
-        } else {
-          setopenEditCategDialog(false);
-          Swal.fire({
-            icon: 'error',
-            title: 'Eroare',
-            text: 'Numele subcategoriilor nu trebuie sa se repete!',
-            footer: '<a href="https://seosky.ro">SeoSky</a>'
-          }).then(() => setopenEditCategDialog(true));
-        }
-      } else {
-        setopenEditCategDialog(false);
-        Swal.fire({
-          icon: 'error',
-          title: 'Eroare',
-          text: 'Acest nume de categorie exista deja!',
-          footer: '<a href="https://seosky.ro">SeoSky</a>'
-        }).then(() => setopenEditCategDialog(true));
-      }
-    } else {
+    if(editCategoryName === "") {
       setopenEditCategDialog(false);
       Swal.fire({
         icon: 'error',
         title: 'Eroare',
-        text: 'Va rugam introduceti numele categoriei!',
+        text: 'Introduceti email-ul utilizatorului!',
         footer: '<a href="https://seosky.ro">SeoSky</a>'
-      }).then(() => setopenEditCategDialog(true));
+      }).then(() => {setopenEditCategDialog(true)});
+    }else if(editCategorySub === ""){
+      setopenEditCategDialog(false);
+      Swal.fire({
+        icon: 'error',
+        title: 'Eroare',
+        text: 'Introduceti parola utilizatorului!',
+        footer: '<a href="https://seosky.ro">SeoSky</a>'
+      }).then(() => {setopenEditCategDialog(true)});
+    } else {
+      categories.map((item)=> {
+        console.log(item.email)
+        if(editCategoryName === item.email){
+          setopenEditCategDialog(false);
+          setisused2(true);
+          Swal.fire({
+            icon: 'error',
+            title: 'Eroare',
+            text: 'Acest email de utilizator este deja folosit!',
+            footer: '<a href="https://seosky.ro">SeoSky</a>'
+          }).then(() => {setopenEditCategDialog(true)});
+        }
+      })
+      if(!isused2){
+        editCategory({
+          "id": editCategoryId,
+          "email": editCategoryName,
+          "password": editCategorySub
+        });
+        setopenEditCategDialog(false);
+          setisused2(false);
+          Swal.fire({
+            icon: 'success',
+            title: 'Succes!',
+            text: 'Utilizatorul a fost editat cu succes!',
+            footer: '<a href="https://seosky.ro">SeoSky</a>'
+          }).then(()=>{resyncCategories()});
+      }
     }
     
   };
@@ -340,7 +329,7 @@ getData();
           "width":70,
           renderCell: ({ row }) => {
             return(
-              <IconButton variant="outlined" color="success" onClick={() => {handleClickOpenEdit(row.name, row.subcategories, row.id)}}>
+              <IconButton variant="outlined" color="success" onClick={() => {handleClickOpenEdit(row.email, row.password, row.id)}}>
               <EditIcon />
             </IconButton>
             )
@@ -489,13 +478,13 @@ getData();
         <DialogTitle>Editeaza categoria</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Editeaza numele categoriei si adauga/sterge/editeaza numele subcategoriilor separate prin virgula. Iar daca nu exista, lasa loc liber.
+            Editeaza email-ul utilizatorului si parola acestuia. Toate campurile sunt obligatorii.
           </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Numele categoriei"
+            label="Email"
             fullWidth
             variant="standard"
             value={editCategoryName}
@@ -507,7 +496,7 @@ getData();
             autoFocus
             margin="dense"
             id="subcategories"
-            label="Subcategorii (separate prin virgula)"
+            label="Parola"
             fullWidth
             variant="standard"
             value={editCategorySub}
