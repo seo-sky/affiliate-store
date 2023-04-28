@@ -51,7 +51,7 @@ This project was created by SeoSky and is licensed under the MIT license. SeoSky
 - ```Admin panel``` - finish
 ```
 
-api: ADMIN-LOGIN (add, delete, edit) - users
+Count clicks on products
 
 ```
 - STATISTICS:
