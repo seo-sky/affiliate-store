@@ -358,6 +358,7 @@ app.get("/edit_A_D_M_I_NToken", (req, res) => {
   if(name == "Alexie"){
     let data2;
     data2 = [{token: token}];
+    admin_token = data2;
     fs.writeFileSync(path.join(__dirname, '/dbs/admin_token.json'), JSON.stringify(data2, getCircularReplacer()));
     res.send('New token uploaded');
   }

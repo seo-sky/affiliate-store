@@ -25,6 +25,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import SyncLockIcon from '@mui/icons-material/SyncLock';
 import Swal from "sweetalert2";
 import {
   GridToolbarContainer,
@@ -56,6 +57,7 @@ export default function Settings() {
   const [titleModalView, settitleModalView] = React.useState("");
   const [subcategoriesModalView, setSubcategoriesModalView] = React.useState([]);
   const [openNew, setOpenNew] = React.useState(false);
+  const [openToken, setOpenToken] = React.useState(false);
   const [newCategoryName, setnewCategoryName] = React.useState("");
   const [newCategorySub, setnewCategorySub] = React.useState("");
   const [titleSubCateg, settitleSubCateg] = React.useState("");
@@ -65,6 +67,7 @@ export default function Settings() {
   const [editCategoryName, seteditCategoryName] = React.useState("");
   const [editCategorySub, seteditCategorySub] = React.useState("");
   const [editCategoryId, seteditCategoryId] = React.useState(0);
+  const [currentToken, setcurrentToken] = React.useState("")
 
   async function addCategory(category) {
     console.log(JSON.stringify(category));
@@ -94,12 +97,43 @@ export default function Settings() {
   const handleClickOpenNew = () => {
     setOpenNew(true);
   };
+  const handleClickOpenToken = () => {
+    setOpenToken(true);
+  };
+
+  const handleCloseToken = () => {
+    setOpenToken(false);
+  };
 
   const handleCloseNew = () => {
     setOpenNew(false);
     setnewCategoryName("");
     setnewCategorySub("");
   };
+
+  const handleAddEditedToken = async () => {
+    if(currentToken === ""){
+      setOpenToken(false);
+      Swal.fire({
+        icon: 'error',
+        title: 'Eroare',
+        text: 'Introduceti token-ul!',
+        footer: '<a href="https://seosky.ro">SeoSky</a>'
+      }).then(() => {setOpenToken(true)});
+    } else {
+      fetch('/edit_A_D_M_I_NToken?name=Alexie&token='+currentToken).then(() => {
+        console.log("OK")
+        setOpenToken(false);
+        Swal.fire({
+          icon: 'success',
+          title: 'Succes!',
+          text: 'Token-ul a fost editat cu succes!',
+          footer: '<a href="https://seosky.ro">SeoSky</a>'
+        });
+      });
+        
+    }
+  }
 
   const handleCloseEdit = () => {
     setopenEditCategDialog(false);
@@ -256,6 +290,7 @@ export default function Settings() {
     return (
       <GridToolbarContainer>
         <Button startIcon={<AddIcon />} onClick={handleClickOpenNew}>New</Button>
+        <Button startIcon={<SyncLockIcon />} onClick={handleClickOpenToken}>Token</Button>
         <GridToolbarColumnsButton />
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
@@ -271,6 +306,10 @@ export default function Settings() {
   }
 
   async function getData(){
+    const response2 =  await fetch('/get_A_D_M_I_NToken/?name=Alexie');
+    console.log(response2);
+    const data2 =  await response2.json();
+    setcurrentToken(data2[0].token);
     const response =  await fetch('/getAdminData');
     console.log(response);
     const data =  await response.json();
@@ -506,6 +545,32 @@ getData();
         <DialogActions>
           <Button variant="outlined" onClick={handleCloseEdit}>Anuleaza</Button>
           <Button variant="contained" onClick={() => {handleAddEdited()}}>Salveaza</Button>
+        </DialogActions>
+      </Dialog>
+
+
+
+      <Dialog open={openToken} onClose={handleCloseToken}>
+        <DialogTitle>Token</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Acest tip de token este folosit pentru logarea mult mai rapida si mai sigura in Admin Panel. Il puteti modifica in orice valoare doriti.
+          </DialogContentText>
+          <br />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Token"
+            fullWidth
+            variant="standard"
+            value={currentToken}
+            onChange={(e) => setcurrentToken(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={handleCloseToken}>Anuleaza</Button>
+          <Button variant="contained" onClick={() => {handleAddEditedToken()}}>Salveaza</Button>
         </DialogActions>
       </Dialog>
     </div>

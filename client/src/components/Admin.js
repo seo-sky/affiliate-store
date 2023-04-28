@@ -209,8 +209,8 @@ export default function Admin() {
         footer: 'Copyright © <a href="https://seosky.ro">SeoSky</a>'
       });
     } else {
-      adminData.map(account => {
-        if(data.get("email") == account.email && data.get("password") == account.password){
+      adminData.map((account) => {
+        if(data.get("email") === account.email && data.get("password") === account.password){
           if(data.get("remember") == "remember"){
             localStorage.setItem('login', true);
           }
@@ -243,7 +243,7 @@ export default function Admin() {
       sessionStorage.setItem("currentlog", true);
             window.location.href = '/adminpanel';
           });
-        } else if (data.get("email") != account.email && data.get("password") != account.password) {
+        } else if (data.get("email") !== account.email && data.get("password") !== account.password) {
           Swal.fire({
             icon: 'error',
             title: 'Eroare!',
