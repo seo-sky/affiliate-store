@@ -8,14 +8,15 @@ const { deflateRawSync } = require('zlib');
 
 const app = express();
 
-// Server DB
+// Local Server DB
 let categories = [];
 let products = [];
 let admin_token = [];
-
 let admin_data = [];
-
 let admin_log = [];
+const monthNames = ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Junie", "Julie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"];
+
+
 
 
 const getCircularReplacer = () => {
@@ -435,6 +436,23 @@ app.get('/deleteAllAdminLog', (req, res) => {
 //
 //
 //
+// ------------------------------------------------------------------------------------------STATS (API)-----------------------------------------------------------------------------
+app.get("/clickProduct", (req, res) => {
+  let product_id = req.query.id;
+  const data = fs.readFileSync(path.join(__dirname, '/dbs/products.json'), 'utf8');
+  console.log("reading DB");
+
+  let data2 = JSON.parse(data);
+  data2.map((item) => {
+    if(Number(item.id) === Number(product_id)) {
+      item.clicks = Number(item.clicks) + 1
+    }
+  });
+  products = data2;
+  fs.writeFileSync(path.join(__dirname, '/dbs/products.json'), JSON.stringify(data2, getCircularReplacer()));
+  res.send('record is added to the database');
+});
+// ------------------------------------------------------------------------------------------STATS (API)-----------------------------------------------------------------------------
 
 // Accept all routes from ReactJS
 app.get('*', (req,res) =>{
