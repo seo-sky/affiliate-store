@@ -11,10 +11,12 @@ const app = express();
 // Local Server DB
 let categories = [];
 let products = [];
+let products_stats = [];
 let admin_token = [];
 let admin_data = [];
 let admin_log = [];
 const monthNames = ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Junie", "Julie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"];
+const standardYearMonths = [{month:"Ianuarie", clicks:0}, {month:"Februarie", clicks:0}, {month:"Martie", clicks:0}, {month:"Aprilie", clicks:0}, {month:"Mai", clicks:0}, {month:"Iunie", clicks:0}, {month:"Iulie", clicks:0}, {month:"August", clicks:0}, {month:"Septembrie", clicks:0}, {month:"Octombrie", clicks:0}, {month:"Noiembrie", clicks:0}, {month:"Decembrie", clicks:0}]
 
 
 
@@ -440,8 +442,10 @@ app.get('/deleteAllAdminLog', (req, res) => {
 app.get("/clickProduct", (req, res) => {
   let product_id = req.query.id;
   const data = fs.readFileSync(path.join(__dirname, '/dbs/products.json'), 'utf8');
+  const d = new Date();
+  let currentYear = d.getFullYear();
   console.log("reading DB");
-
+  
   let data2 = JSON.parse(data);
   data2.map((item) => {
     if(Number(item.id) === Number(product_id)) {
@@ -450,7 +454,36 @@ app.get("/clickProduct", (req, res) => {
   });
   products = data2;
   fs.writeFileSync(path.join(__dirname, '/dbs/products.json'), JSON.stringify(data2, getCircularReplacer()));
-  res.send('record is added to the database');
+    const products_clicks = fs.readFileSync(path.join(__dirname, '/dbs/products_clicks.json'), 'utf8');
+    let clicksProd = JSON.parse(products_clicks);
+    let v = [];
+    
+    if(clicksProd.length > 0){
+      let ises = false;
+      clicksProd.map((an) => {
+        if(an.an === currentYear){
+          ises = true;
+        }
+      });
+      if(!ises) {
+        clicksProd.push({an: currentYear, months: standardYearMonths});
+      }
+    } else {
+      clicksProd.push({an: currentYear, months: standardYearMonths});
+    }
+      clicksProd.map((an) => {
+        
+        if(Number(an.an) === Number(currentYear)){
+          an.months.map((month) => {
+            if(month.month === monthNames[d.getMonth()]){
+              month.clicks = Number(month.clicks) + 1
+            }
+          })
+      }
+      })
+  res.send(clicksProd);
+  products_stats = clicksProd;
+  fs.writeFileSync(path.join(__dirname, '/dbs/products_clicks.json'), JSON.stringify(clicksProd, getCircularReplacer()));
 });
 // ------------------------------------------------------------------------------------------STATS (API)-----------------------------------------------------------------------------
 
