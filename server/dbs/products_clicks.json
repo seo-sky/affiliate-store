@@ -1,1 +1,55 @@
-[{"an":2023,"months":[{"month":"Ianuarie","clicks":0},{"month":"Februarie","clicks":0},{"month":"Martie","clicks":0},{"month":"Aprilie","clicks":27},{"month":"Mai","clicks":0},{"month":"Iunie","clicks":0},{"month":"Iulie","clicks":0},{"month":"August","clicks":0},{"month":"Septembrie","clicks":0},{"month":"Octombrie","clicks":0},{"month":"Noiembrie","clicks":0},{"month":"Decembrie","clicks":0}]}]
+[
+  {
+    "an": 2023,
+    "months": [
+      {
+        "month": "Ianuarie",
+        "clicks": 0
+      },
+      {
+        "month": "Februarie",
+        "clicks": 0
+      },
+      {
+        "month": "Martie",
+        "clicks": 0
+      },
+      {
+        "month": "Aprilie",
+        "clicks": 27
+      },
+      {
+        "month": "Mai",
+        "clicks": 0
+      },
+      {
+        "month": "Iunie",
+        "clicks": 0
+      },
+      {
+        "month": "Iulie",
+        "clicks": 0
+      },
+      {
+        "month": "August",
+        "clicks": 0
+      },
+      {
+        "month": "Septembrie",
+        "clicks": 0
+      },
+      {
+        "month": "Octombrie",
+        "clicks": 0
+      },
+      {
+        "month": "Noiembrie",
+        "clicks": 0
+      },
+      {
+        "month": "Decembrie",
+        "clicks": 0
+      }
+    ]
+  }
+]
