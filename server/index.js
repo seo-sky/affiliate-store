@@ -251,7 +251,45 @@ app.post('/addProduct', (req, res) => {
   data2.push(req.body);
   products = data2;
   fs.writeFileSync(path.join(__dirname, '/dbs/products.json'), JSON.stringify(data2, getCircularReplacer()));
-  res.send('record is added to the database');
+  
+  const d = new Date();
+  let currentYear = d.getFullYear();
+  const products_clicks = fs.readFileSync(path.join(__dirname, '/dbs/added_products_stats.json'), 'utf8');
+  let accessStats = JSON.parse(products_clicks);
+  let v = [];
+
+  if (accessStats.length > 0) {
+    let ises = false;
+    accessStats.map((an) => {
+      if (an.an === currentYear) {
+        ises = true;
+      }
+    });
+    if (!ises) {
+      accessStats.push({
+        an: currentYear,
+        months: standardYearMonths
+      });
+    }
+  } else {
+    accessStats.push({
+      an: currentYear,
+      months: standardYearMonths
+    });
+  }
+  accessStats.map((an) => {
+
+    if (Number(an.an) === Number(currentYear)) {
+      an.months.map((month) => {
+        if (month.month === monthNames[d.getMonth()]) {
+          month.clicks = Number(month.clicks) + 1
+        }
+      })
+    }
+  })
+  res.send(accessStats);
+  access_stats = accessStats;
+  fs.writeFileSync(path.join(__dirname, '/dbs/added_products_stats.json'), JSON.stringify(accessStats, getCircularReplacer()));
 });
 
 app.get("/deleteProduct", (req, res) => {
@@ -284,7 +322,46 @@ app.get("/deleteProduct", (req, res) => {
   console.log(data3);
   products = data3;
   fs.writeFileSync(path.join(__dirname, '/dbs/products.json'), JSON.stringify(data3, getCircularReplacer()));
-  res.send('record deleted from the database');
+  
+
+  const d = new Date();
+  let currentYear = d.getFullYear();
+  const products_clicks = fs.readFileSync(path.join(__dirname, '/dbs/deleted_products_stats.json'), 'utf8');
+  let accessStats = JSON.parse(products_clicks);
+  let v = [];
+
+  if (accessStats.length > 0) {
+    let ises = false;
+    accessStats.map((an) => {
+      if (an.an === currentYear) {
+        ises = true;
+      }
+    });
+    if (!ises) {
+      accessStats.push({
+        an: currentYear,
+        months: standardYearMonths
+      });
+    }
+  } else {
+    accessStats.push({
+      an: currentYear,
+      months: standardYearMonths
+    });
+  }
+  accessStats.map((an) => {
+
+    if (Number(an.an) === Number(currentYear)) {
+      an.months.map((month) => {
+        if (month.month === monthNames[d.getMonth()]) {
+          month.clicks = Number(month.clicks) + 1
+        }
+      })
+    }
+  })
+  res.send(accessStats);
+  access_stats = accessStats;
+  fs.writeFileSync(path.join(__dirname, '/dbs/deleted_products_stats.json'), JSON.stringify(accessStats, getCircularReplacer()));
 });
 
 

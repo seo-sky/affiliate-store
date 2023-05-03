@@ -48,16 +48,13 @@ This project was created by SeoSky and is licensed under the MIT license. SeoSky
 
 ## What to do next:
 
+```
+1. sa descopere automat din link distribuitorul
+2. pagination
+```
 - ```Admin panel``` - finish
-```
+  - STATISTICS:
+    - ```FRONTEND CHARTS```
 
-Count clicks on products
-
-```
-- STATISTICS:
-  - ```produse adaugate```
-  - ```produse sterse```
-  - ```clickuri```
-  - ```accesari```
-
-- improve security
+  - API REST:
+    - improve security
