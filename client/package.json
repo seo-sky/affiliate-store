@@ -28,6 +28,7 @@
     "react-dom": "^18.2.0",
     "react-dynamic-modal": "^1.1.1",
     "react-number-format": "^5.1.4",
+    "react-paginate": "^8.2.0",
     "react-pro-sidebar": "^1.0.0",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",

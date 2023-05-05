@@ -278,7 +278,6 @@ app.post('/addProduct', (req, res) => {
     });
   }
   accessStats.map((an) => {
-
     if (Number(an.an) === Number(currentYear)) {
       an.months.map((month) => {
         if (month.month === monthNames[d.getMonth()]) {
