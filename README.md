@@ -49,8 +49,7 @@ This project was created by SeoSky and is licensed under the MIT license. SeoSky
 ## What to do next:
 
 ```
-1. sa descopere automat din link distribuitorul
-2. pagination
+- sa descopere automat din link distribuitorul
 ```
 - ```Admin panel``` - finish
   - STATISTICS:
