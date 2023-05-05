@@ -268,7 +268,7 @@ const handlePageChange = (event, value) => {
 };
 
 function PaginatedItems({ itemsPerPage }) {
-  const newOffset = (pageNumber-1) * 2 % filteredData.length;
+  const newOffset = (pageNumber-1) * 12 % filteredData.length;
   console.log(`User requested page number ${pageNumber}, which is offset ${newOffset}`);
   setItemOffset(newOffset);
   // We start with an empty list of items.
@@ -349,7 +349,7 @@ return (
     </div>
   <Grid className="gridProducts" container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} columns={{ xs: 2, sm: 3,  md: 6, xl: 12}}>
     {checkFilter(filteredData)}
-    <PaginatedItems itemsPerPage={2} />
+    <PaginatedItems itemsPerPage={12} />
 </Grid>
 
 
